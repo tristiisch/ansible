@@ -1,6 +1,8 @@
 services:
   nginx-001:
     build: ./debian
+    ports:
+    - 91:80
     privileged: true
     volumes:
     - /sys/fs/cgroup:/sys/fs/cgroup:ro

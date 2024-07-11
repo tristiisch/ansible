@@ -10,7 +10,7 @@ pid /run/nginx.pid;
 pcre_jit on;
 
 # Configures default error logger.
-error_log /var/log/nginx/error.log;
+error_log /var/log/nginx/error.log notice;
 
 # Includes files with directives to load dynamic modules.
 include /etc/nginx/modules-enabled/*.conf;
@@ -38,7 +38,6 @@ http {
 	tcp_nopush on;
 
 	types_hash_max_size 2048;
-	# server_tokens off;
 
 	# server_names_hash_bucket_size 64;
 	# server_name_in_redirect off;
@@ -55,6 +54,10 @@ http {
 	# SSL Settings
 	##
 
+	# listen 443 ssl;
+	# ssl_certificate /etc/ssl/certs/selfsigned.crt;
+	# ssl_certificate_key /etc/ssl/private/selfsigned.key;
+
 	# Enables the specified protocols. Default is TLSv1 TLSv1.1 TLSv1.2.
 	ssl_protocols {{ nginx_ssl_protocols }};
 
@@ -67,7 +70,7 @@ http {
 	##
 
 	# Specifies the main log format.
-	log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+	log_format main '[$time_local] $remote_addr - $remote_user "$request" '
 					'$status $body_bytes_sent "$http_referer" '
 					'"$http_user_agent" "$http_x_forwarded_for"';
 
@@ -90,13 +93,25 @@ http {
 	# gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
 
 	##
+	# Custom error page
+	##
+
+	error_page 400 /400.html;
+	error_page 403 /403.html;
+	error_page 404 /404.html;
+	error_page 497 /497.html;
+	error_page 500 /500.html;
+	error_page 502 /502.html;
+	error_page 503 /503.html;
+	error_page 504 /504.html;
+
+	##
 	# Virtual Host Configs
 	##
 
 	include /etc/nginx/conf.d/*.conf;
 	include {{ nginx_sites_enabled }}/*;
 }
-
 
 # mail {
 # 	# See sample authentication script at:

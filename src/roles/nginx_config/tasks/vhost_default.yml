@@ -5,14 +5,13 @@
   with_items:
   - "{{ nginx_sites_enabled }}/default"
   - "{{ nginx_sites_available }}/default"
+  notify: reload_nginx
 
 - name: Add custom vhost
   template:
     src: "default.conf.j2"
     dest: "{{ nginx_sites_available }}/default.conf"
-    # owner: www-data
-    # group: nginx
-    # mode: 0640
+  notify: reload_nginx
 
 - name: Create custom vhost files directory
   file:
@@ -22,21 +21,20 @@
     owner: "{{ nginx_admin_user }}"
     group: "{{ nginx_process_group}}"
     mode: 0650
+  notify: reload_nginx
 
 - name: Copy custom vhost files
   template:
-    src: "index.conf.j2"
+    src: "index.html.j2"
     dest: "{{ nginx_default_root }}/index.html"
     owner: "{{ nginx_admin_user }}"
     group: "{{ nginx_process_group}}"
     mode: 0650
+  notify: reload_nginx
 
 - name: Enable custom vhost
   file:
     src: "{{ nginx_sites_available }}/default.conf"
     dest: "{{ nginx_sites_enabled }}/default.conf"
-    # owner: root
-    # group: nginx
-    # mode: 0640
     state: link
   notify: reload_nginx

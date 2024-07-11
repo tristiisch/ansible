@@ -26,6 +26,6 @@ RUN mkdir -p /run/sshd \
 	&& echo 'PermitRootLogin no' >> /etc/ssh/sshd_config.d/custom \
 	&& echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config.d/custom
 
-EXPOSE 22
+EXPOSE 80
 STOPSIGNAL SIGRTMIN+3
 CMD ["/lib/systemd/systemd"]

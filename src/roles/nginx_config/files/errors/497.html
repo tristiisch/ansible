@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>400 - Bad Request</title>
+    <script>
+		function loadCSS(url) {
+			var link = document.createElement("link");
+			link.rel = "stylesheet";
+			link.type = "text/css";
+			link.href = url;
+			document.head.appendChild(link);
+		}
+        var host = window.location.host;
+        var secureURLbase = `https://${host}`;
+
+        var cssURL = `${secureURLbase}/errors/style.css`;
+		loadCSS(cssURL);
+
+		var pathname = window.location.pathname;
+		var search = window.location.search;
+		var suggestURL = `${secureURLbase}${pathname}${search}`;
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>400 - Bad Request</h1>
+        <h2>The plain HTTP request was sent to HTTPS port.</h2>
+		<p>This error occurs when attempting to use a non-secure protocol on a secured port.</p>
+		<p>You can try <a id="secureURL" href="">loading ...</a>.</p>
+    </div>
+	<script>
+		var secureURLElement = document.getElementById("secureURL");
+		secureURLElement.href = suggestURL;
+		secureURLElement.innerHTML = suggestURL;
+	</script>
+</body>
+</html>

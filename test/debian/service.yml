@@ -1,4 +1,6 @@
 build: ./debian
 volumes:
   - /sys/fs/cgroup:/sys/fs/cgroup:ro
+ports:
+  - 91:80
 privileged: true

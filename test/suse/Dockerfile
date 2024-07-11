@@ -4,7 +4,7 @@ RUN zypper refresh
 RUN zypper install -y systemd systemd-sysvinit
 
 RUN zypper install -y \
-    python3 openssh sudo \
+    python3 python3-rpm openssh sudo \
     curl nano shadow \
     htop net-tools-deprecated iputils netcat-openbsd bind-utils
 

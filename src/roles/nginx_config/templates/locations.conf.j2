@@ -1,0 +1,22 @@
+rewrite_log on;
+
+location /status {
+	if ($remote_addr = 127.0.0.1) {
+		access_log off;
+	}
+	stub_status;
+	allow 127.0.0.1;
+	allow 10.0.0.0/8;
+	allow 172.16.0.0/12;
+	allow 192.168.0.0/16;
+	deny all;
+}
+
+location = /errors/style.css {
+	alias {{ nginx_errors_path }}/style.css;
+}
+
+location ~ ^/(403|404|497|500|502|503|504)\.html$ {
+	root {{ nginx_errors_path }};
+	internal;
+}

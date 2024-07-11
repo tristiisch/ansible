@@ -8,14 +8,13 @@
     src: "{{ nginx_config_dir }}/nginx.conf"
     dest: "{{ nginx_config_dir }}/nginx.backup.conf"
     remote_src: yes
-    # state: touch
-  # ignore_errors: yes
   when: not backup_file_exists.stat.exists
 
 - name: Copy NGinX conf
   template:
     src: "nginx.conf.j2"
     dest: "{{ nginx_config_dir }}/nginx.conf"
+  notify: reload_nginx
 
 - name: Delete default vhost
   file:
@@ -25,38 +24,14 @@
   - "{{ nginx_sites_enabled }}/default"
   - "{{ nginx_sites_available }}/default"
 
-# - name: Check if NGinX user exists
-#   getent:
-#     database: passwd
-#     key: nginx
-#   register: user_info
-
-
 - name: Determine available users
   getent:
     database: passwd
   register: user_info
 
-# - name: Set fact when NGinX exists
-#   set_fact:
-#     user_exists: true
-#   when: '"nginx" in item.key'
-#   loop: "{{ ansible_facts.getent_passwd | dict2items }}"
-# - debug:
-#     var: user_info
-
-# - name: Set fact when NGinX does not exists
-#   set_fact:
-#     user_exists: false
-#   when: '"nginx" not in item.key'
-#   loop: "{{ ansible_facts.getent_passwd | dict2items }}"
-
 - name: Check if NGinX user exists
   set_fact:
     user_exists: "{{ 'nginx' in ansible_facts.getent_passwd }}"
-
-- debug:
-    var: user_exists
 
 - name: Create NGinX user
   user:
@@ -66,22 +41,22 @@
     shell: "{{ nginx_user_shell }}"
     home: "{{ nginx_user_workdir }}"
     create_home: no
-  # when: '"nginx" not in item.key'
   when: not user_exists
-  # loop: "{{ ansible_facts.getent_passwd | dict2items }}"
 
 - name: Create sites_enabled folder
   file:
     path: "{{ nginx_sites_enabled }}"
     state: directory
+  notify: reload_nginx
 
 - name: Create sites_available folder
   file:
     path: "{{ nginx_sites_available }}"
     state: directory
+  notify: reload_nginx
 
+- import_tasks: locations.yml
 - import_tasks: vhost_default.yml
-
 - import_tasks: vhost_no_domain.yml
 
 - name: Ensure NGinX is running

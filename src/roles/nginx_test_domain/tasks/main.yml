@@ -11,10 +11,10 @@
 # - debug:
 #     var: result
 
-- name: Print NGinX versions
-  debug:
-    msg: "{{ result.server }}"
-  ignore_errors: true
+# - name: Print NGinX versions
+#   debug:
+#     msg: "{{ result.server }}"
+#   ignore_errors: true
 
 - name: Print response content
   debug:
