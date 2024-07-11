@@ -1,0 +1,4 @@
+- name: List servers
+  hosts: ssh_account
+  roles:
+  - informations

@@ -1,0 +1,17 @@
+- name: Add no host vhost
+  template:
+    src: "no_host.conf.j2"
+    dest: "{{ nginx_sites_available }}/no_host.conf"
+    # owner: root
+    # group: nginx
+    # mode: 0640
+
+- name: Enable no host vhost
+  file:
+    src: "{{ nginx_sites_available }}/no_host.conf"
+    dest: "{{ nginx_sites_enabled }}/no_host.conf"
+    # owner: root
+    # group: nginx
+    # mode: 0640
+    state: link
+  notify: reload_nginx

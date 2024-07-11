@@ -1,0 +1,4 @@
+build: ./debian
+volumes:
+  - /sys/fs/cgroup:/sys/fs/cgroup:ro
+privileged: true

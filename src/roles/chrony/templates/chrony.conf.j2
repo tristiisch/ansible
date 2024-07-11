@@ -1,0 +1,12 @@
+# Use public servers from the pool.ntp.org project.
+{% for server in chrony_config.servers %}
+{{ server }}
+{% endfor %}
+
+# Allow NTP client access from local network.
+{{ chrony_config.allow }}
+
+{% if chrony_config.log_tracking %}
+# Enable logging of tracking measurements statistics.
+log tracking measurements statistics
+{% endif %}

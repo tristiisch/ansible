@@ -1,0 +1,5 @@
+services:
+  ansible:
+    build: ./ansible
+    volumes:
+      - ../src:/opt/ansible

@@ -1,0 +1,14 @@
+---
+nginx_port: 80
+nginx_user_workdir: /var/www
+nginx_user_shell: /sbin/nologin
+nginx_admin_user: root
+nginx_process_user: nginx
+nginx_process_group: nginx
+nginx_default_root: "{{ nginx_user_workdir }}/default"
+nginx_config_dir: /etc/nginx
+nginx_sites_available: "{{ nginx_config_dir }}/sites-available"
+nginx_sites_enabled: "{{ nginx_config_dir }}/sites-enabled"
+nginx_worker_processes: 2
+nginx_worker_connections: 16
+nginx_ssl_protocols: TLSv1.2 TLSv1.3

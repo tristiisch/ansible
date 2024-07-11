@@ -1,0 +1,19 @@
+- name: Install NGinX
+  hosts: web_nginx
+  become: true
+  roles:
+    - nginx_install
+    
+- name: Configure NGinX
+  hosts: web_nginx
+  gather_facts: no
+  become: true
+  roles:
+    - nginx_config
+
+- name: Test NGinX
+  hosts: web_nginx
+  gather_facts: no
+  roles:
+    - nginx_test_domain
+    # - nginx_test_ip

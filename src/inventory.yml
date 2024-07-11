@@ -1,0 +1,17 @@
+ntp_chrony:
+  children:
+    # web_nginx:
+    # docker:
+
+ssh_account:
+  children:
+    web_nginx:
+    # docker:
+
+web_nginx:
+  hosts:
+    NGINX-00[1:5]:
+
+# docker:
+#   hosts:
+#     DOCKER-00[1:5]:

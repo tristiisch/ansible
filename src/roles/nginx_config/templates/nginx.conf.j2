@@ -1,0 +1,120 @@
+user {{ nginx_process_user }};
+
+# Set number of worker processes
+# auto = automatically based on number of CPU cores.
+worker_processes {{ nginx_worker_processes }};
+
+pid /run/nginx.pid;
+
+# Enables the use of JIT for regular expressions to speed-up their processing.
+pcre_jit on;
+
+# Configures default error logger.
+error_log /var/log/nginx/error.log;
+
+# Includes files with directives to load dynamic modules.
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+	# The maximum number of simultaneous connections that can be opened by
+	# a worker process.
+	worker_connections {{ nginx_worker_connections }};
+	# multi_accept on;
+}
+
+http {
+
+	##
+	# Basic Settings
+	##
+
+
+	# Sendfile copies data between one FD and other from within the kernel,
+	# which is more efficient than read() + write(). Default is off.
+	sendfile on;
+
+	# Causes nginx to attempt to send its HTTP response head in one packet,
+	# instead of using partial frames. Default is 'off'.
+	tcp_nopush on;
+
+	types_hash_max_size 2048;
+	# server_tokens off;
+
+	# server_names_hash_bucket_size 64;
+	# server_name_in_redirect off;
+
+	# Includes mapping of file name extensions to MIME types of responses
+	# and defines the default type.
+	include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+
+	# Tell nginx version to the clients. Default is 'on'.
+	server_tokens off;
+
+	##
+	# SSL Settings
+	##
+
+	# Enables the specified protocols. Default is TLSv1 TLSv1.1 TLSv1.2.
+	ssl_protocols {{ nginx_ssl_protocols }};
+
+	# Specifies that our cipher suits should be preferred over client ciphers.
+	# Default is 'off'.
+	ssl_prefer_server_ciphers on;
+
+	##
+	# Logging Settings
+	##
+
+	# Specifies the main log format.
+	log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+					'$status $body_bytes_sent "$http_referer" '
+					'"$http_user_agent" "$http_x_forwarded_for"';
+
+	# Sets the path, format, and configuration for a buffered log write.
+	access_log /var/log/nginx/access.log;
+
+	##
+	# Gzip Settings
+	##
+
+	gzip on;
+
+	# Set the Vary HTTP header as defined in the RFC 2616. Default is 'off'.
+	# gzip_vary on;
+
+	# gzip_proxied any;
+	# gzip_comp_level 6;
+	# gzip_buffers 16 8k;
+	# gzip_http_version 1.1;
+	# gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
+	##
+	# Virtual Host Configs
+	##
+
+	include /etc/nginx/conf.d/*.conf;
+	include {{ nginx_sites_enabled }}/*;
+}
+
+
+# mail {
+# 	# See sample authentication script at:
+# 	# http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
+
+# 	# auth_http localhost/auth.php;
+# 	# pop3_capabilities "TOP" "USER";
+# 	# imap_capabilities "IMAP4rev1" "UIDPLUS";
+
+# 	server {
+# 		listen	 localhost:110;
+# 		protocol   pop3;
+# 		proxy	  on;
+# 	}
+
+# 	server {
+# 		listen	 localhost:143;
+# 		protocol   imap;
+# 		proxy	  on;
+# 	}
+# }

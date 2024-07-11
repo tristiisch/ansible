@@ -1,0 +1,3 @@
+os_not_supported: "Not supported on this OS"
+apt_packages: "htop net-tools netcat-openbsd curl"
+yum_packages: "htop net-tools nc curl"

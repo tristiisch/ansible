@@ -1,0 +1,4 @@
+---
+key_dir: "~/.ansible_keys"
+key_private_name: "id_ed25519"
+key_type: "ed25519"

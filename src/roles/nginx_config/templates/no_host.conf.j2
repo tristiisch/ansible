@@ -1,0 +1,7 @@
+server {
+	listen {{ nginx_port}} default_server;
+	listen [::]:{{ nginx_port}} default_server;
+
+    server_name _;
+    return 444;
+}

@@ -1,0 +1,6 @@
+- name: Configure Chrony
+  hosts: ntp_chrony
+  become: true
+  roles:
+    - common
+    - chrony

@@ -1,0 +1,68 @@
+- name: Configure NTP (Chrony) without Python on target
+  hosts: ntp_chrony
+  gather_facts: no
+
+  vars:
+    chrony_conf_template: ../config/template.conf.j2
+    chrony_config:
+      servers:
+        # - "pool 0.pool.ntp.org iburst"
+        # - "pool 1.pool.ntp.org iburst"
+        # - "pool 2.pool.ntp.org iburst"
+        # - "pool 3.pool.ntp.org iburst"
+        - "pool 0.fr.pool.ntp.org iburst"
+        - "pool 1.fr.pool.ntp.org iburst"
+        - "pool 2.fr.pool.ntp.org iburst"
+        - "pool 3.fr.pool.ntp.org iburst"
+      allow: "allow 10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+      log_tracking: true
+    os_not_supported: "Not supported on this OS"
+
+  tasks:
+    - name: Install chrony on Debian, Ubuntu, Red Hat, CentOS
+      raw: |
+        set -eux
+
+        if [ -f /etc/debian_version ]; then
+          apt update
+          apt install -y chrony
+        elif [ -f /etc/redhat-release ]; then
+          yum install -y chrony
+        else
+          echo "{{ os_not_supported }}"
+          exit 1
+        fi
+
+    - name: Configure chrony.conf
+      raw: |
+        set -eux
+
+        file_path=/etc/chrony/conf.d/ansible.conf
+        EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64 -w 0)
+
+        cat <<$EOF > $file_path
+        {% for server in chrony_config.servers %}
+        {{ server }}
+        {% endfor %}
+
+        {% if chrony_config.allow %}
+        {{ chrony_config.allow }}
+        {% endif %}
+
+        {% if chrony_config.log_tracking %}
+        log tracking
+        {% endif %}
+        $EOF
+        chmod 644 $file_path
+
+    - name: Enable and start chrony service on Debian, Ubuntu, Red Hat, CentOS
+      raw: |
+        set -eux
+
+        if [ -f /etc/debian_version ] || [ -f /etc/redhat-release ]; then
+          systemctl enable chrony
+          systemctl start chrony
+        else
+          echo "{{ os_not_supported }}"
+          exit 1
+        fi

@@ -1,0 +1,5 @@
+build: ./archlinux
+volumes:
+  - /sys/fs/cgroup:/sys/fs/cgroup:ro
+privileged: true
+

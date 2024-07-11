@@ -1,0 +1,6 @@
+---
+ansible_user: president
+ansible_password: P@ssword!
+key_dir: "~/.ansible_keys"
+key_public_name: "id_ed25519.pub"
+user_to_create: "ansible"

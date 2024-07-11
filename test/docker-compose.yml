@@ -1,0 +1,26 @@
+services:
+  nginx-001:
+    build: ./debian
+    privileged: true
+    volumes:
+    - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  nginx-002:
+    build: ./ubuntu
+    privileged: true
+    volumes:
+    - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  nginx-003:
+    build: ./rocky
+    privileged: true
+    volumes:
+    - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  nginx-004:
+    build: ./suse
+    privileged: true
+    volumes:
+    - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  nginx-005:
+    build: ./archlinux
+    privileged: true
+    volumes:
+    - /sys/fs/cgroup:/sys/fs/cgroup:ro

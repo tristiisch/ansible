@@ -1,0 +1,6 @@
+- name: Test ssh connection 
+  ping:
+
+- name: Test SSH connection with elevated privileges
+  ping:
+  become: yes
