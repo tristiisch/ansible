@@ -9,7 +9,7 @@ RUN apt install -y systemd systemd-sysv
 VOLUME ["/sys/fs/cgroup"]
 
 RUN apt install -y \
-	python3 openssh-server sudo \
+	python3 python3-pip python3-packaging openssh-server sudo \
 	curl nano passwd \
 	htop net-tools iputils-ping netcat-openbsd dnsutils
 
@@ -26,6 +26,5 @@ RUN mkdir -p /run/sshd \
 	&& echo 'PermitRootLogin no' >> /etc/ssh/sshd_config.d/custom \
 	&& echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config.d/custom
 
-EXPOSE 80
 STOPSIGNAL SIGRTMIN+3
 CMD ["/lib/systemd/systemd"]

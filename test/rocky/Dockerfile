@@ -15,7 +15,7 @@ RUN dnf install -y epel-release
 VOLUME ["/sys/fs/cgroup"]
 
 RUN dnf install -y --allowerasing \
-	python3 openssh-server sudo \
+	python3 python3-pip python3-packaging openssh-server sudo \
 	curl nano passwd \
 	htop net-tools \
 	iputils nmap-ncat bind-utils \

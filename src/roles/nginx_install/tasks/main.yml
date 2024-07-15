@@ -7,7 +7,7 @@
   package:
     name: python3-rpm
     state: present
-  when: ansible_facts['distribution'] | lower is search('suse')
+  when: ansible_os_family == 'Suse'
 
 - name: Gather facts about installed packages
   ansible.builtin.package_facts:
@@ -31,4 +31,3 @@
   service:
     name: nginx
     state: started
-    enabled: yes

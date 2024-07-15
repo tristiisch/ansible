@@ -1,0 +1,20 @@
+- name: Retrive if cluster already exists
+  set_fact:
+    cluster_exists: "{{ groups['docker_managers'] | map('extract', hostvars, 'main_manager') | select('defined') | list | length > 0 }}"
+
+- name: Set a fact for random host
+  set_fact:
+    random_host: "{{ groups['docker_managers'] | random }}"
+  run_once: true
+  when: cluster_exists == false
+
+- name: Initialize Docker Swarm
+  docker_swarm:
+    state: present
+  register: swarm_result
+  delegate_to: "{{ random_host }}"
+  run_once: true
+  when: cluster_exists == false
+
+# - debug:
+#     var: swarm_result

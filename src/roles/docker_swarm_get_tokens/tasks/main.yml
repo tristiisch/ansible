@@ -1,0 +1,11 @@
+- name: Retrive Docker Swarm Tokens
+  docker_swarm_info:
+    unlock_key: true
+  register: swarm_data
+  when: main_manager is defined and main_manager == inventory_hostname
+
+- name: Save Docker Swarm Tokens
+  set_fact:
+    manager_token: "{{ swarm_data.swarm_facts.JoinTokens.Manager }}"
+    worker_token: "{{ swarm_data.swarm_facts.JoinTokens.Worker }}"
+  when: main_manager is defined and main_manager == inventory_hostname

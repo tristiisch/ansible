@@ -1,8 +1,9 @@
 SOURCES				:=	.
 INVENTORY			:=	$(SOURCES)/inventory.yml
+INVENTORY_DOCKER 	:=	$(SOURCES)/inventory-docker.yml
 PLAYBOOK_DIR		:=	$(SOURCES)/playbook
 DEFAULT_GROUP		:=	all
-RULE_WITH_ARGS		:=	play
+RULE_WITH_ARGS		:=	play play-docker
 
 ifeq ($(filter $(RULE_WITH_ARGS), $(firstword $(MAKECMDGOALS))),$(firstword $(MAKECMDGOALS)))
   RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -12,14 +13,8 @@ endif
 play:
 	ansible-playbook -i $(INVENTORY) $(PLAYBOOK_DIR)/$(RUN_ARGS).yml
 
-play-ssh-user:
-	ansible-playbook -i $(INVENTORY) $(PLAYBOOK_DIR)/ssh_account.yml
-
-play-nginx:
-	ansible-playbook -i $(INVENTORY) $(PLAYBOOK_DIR)/nginx.yml
-
-play-chrony:
-	ansible-playbook -i $(INVENTORY) $(PLAYBOOK_DIR)/chrony.yml
+play-docker:
+	ansible-playbook -i $(INVENTORY_DOCKER) $(PLAYBOOK_DIR)/$(RUN_ARGS).yml
 
 ping:
 	ansible -i $(INVENTORY) $(DEFAULT_GROUP) -m ping

@@ -1,0 +1,25 @@
+- name: Get docker info
+  docker_host_info:
+  register: swarm_status
+
+- name: Print cluster error if any
+  debug:
+    var: swarm_status.host_info.Swarm.Error
+  when: swarm_status.host_info.Swarm.Error != ''
+
+- name: Set fact if the node is in the swarm
+  set_fact:
+    in_cluster: "{{ swarm_status.host_info.Swarm.LocalNodeState == 'active' }}"
+
+- name: Set fact if the node is a manager
+  set_fact:
+    is_manager: "{{ swarm_status.host_info.Swarm.ControlAvailable == true }}"
+  when: in_cluster
+
+- name: Get the first manager in the swarm
+  set_fact:
+    main_manager: "{{ inventory_hostname }}"
+  when: is_manager | default(false) and main_manager is not defined
+
+# - debug:
+#     var: swarm_status

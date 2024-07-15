@@ -1,0 +1,17 @@
+- name: Choose the main manager
+  set_fact:
+    random_manager: "{{ groups['docker_managers'] | random }}"
+  when: main_manager is not defined
+
+# - name: Define the main manager
+#   set_fact:
+#     main_manager: "{{ random_manager }}"
+#     create_cluster: true
+#   delegate_to: "{{ random_manager }}"
+#   when: main_manager is not defined 
+
+# - name: Define the main manager
+#   debug:
+#     var: main_manager
+#     var: random_manager
+#   delegate_to: "{{ random_manager }}"

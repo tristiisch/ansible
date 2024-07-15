@@ -1,14 +1,14 @@
 SOURCES := ./src
 INVENTORY := $(SOURCES)/inventory.yml
+INVENTORY_DOCKER := $(SOURCES)/inventory-docker.yml
 PLAYBOOK_DIR := $(SOURCES)/playbook
 DEFAULT_GROUP := all
 
 TEST_DIR := ./test
 TEST_PYTHON_FILE := $(TEST_DIR)/docker-compose.py
 TEST_COMPOSE_FILE := $(TEST_DIR)/docker-compose.yml
-# TEST_SERVICE_FILE := $(TEST_DIR)/debian/service.yml,$(TEST_DIR)/ubuntu/service.yml,$(TEST_DIR)/alpine/service.yml
-# TEST_SERVICE_FILE := $(TEST_DIR)/debian/service.yml,$(TEST_DIR)/ubuntu/service.yml,$(TEST_DIR)/rockylinux/service.yml,$(TEST_DIR)/suse/service.yml,$(TEST_DIR)/archlinux/service.yml,$(TEST_DIR)/centos/service.yml
-TEST_SERVICE_FILE := $(TEST_DIR)/debian/service.yml,$(TEST_DIR)/ubuntu/service.yml,$(TEST_DIR)/rocky/service.yml,$(TEST_DIR)/suse/service.yml,$(TEST_DIR)/archlinux/service.yml
+TEST_SERVICE_DEBIAN_FILE := $(TEST_DIR)/debian/service.yml
+TEST_SERVICE_ALL_FILE := $(TEST_DIR)/debian/service.yml,$(TEST_DIR)/ubuntu/service.yml,$(TEST_DIR)/rocky/service.yml,$(TEST_DIR)/suse/service.yml,$(TEST_DIR)/archlinux/service.yml
 TEST_ANSIBLE_COMPOSE_FILE := $(TEST_DIR)/ansible/docker-compose.yml
 
 play-chrony:
@@ -36,21 +36,26 @@ print-docker-version:
 graph:
 	@ansible-inventory -i $(INVENTORY) --graph --vars
 
-docker: docker-start
+docker-init-all:
+	@python $(TEST_PYTHON_FILE) -i "$(INVENTORY)" -s "$(TEST_SERVICE_ALL_FILE)" -o "$(TEST_COMPOSE_FILE)"
 
-docker-init:
-	@python $(TEST_PYTHON_FILE) -i "$(INVENTORY)" -s "$(TEST_SERVICE_FILE)" -o "$(TEST_COMPOSE_FILE)"
+docker-init-docker:
+	@python $(TEST_PYTHON_FILE) -i "$(INVENTORY_DOCKER)" -s "$(TEST_SERVICE_DEBIAN_FILE)" -o "$(TEST_COMPOSE_FILE)"
 
-docker-start: docker-init
+docker-start:
 	@docker compose -f "$(TEST_COMPOSE_FILE)" -f "$(TEST_ANSIBLE_COMPOSE_FILE)" up -d --build --remove-orphans
 
 docker-down:
 	@docker compose -f "$(TEST_COMPOSE_FILE)" -f "$(TEST_ANSIBLE_COMPOSE_FILE)" down -v
 
-docker-re: docker-init
+docker-re:
 	@docker compose -f "$(TEST_COMPOSE_FILE)" -f "$(TEST_ANSIBLE_COMPOSE_FILE)" up -d --build --force-recreate --remove-orphans
 
 docker-cli:
 	@docker compose -f "$(TEST_COMPOSE_FILE)" -f "$(TEST_ANSIBLE_COMPOSE_FILE)" exec ansible bash
+
+portainer:
+	@docker compose -f "$(TEST_COMPOSE_FILE)" -f "$(TEST_ANSIBLE_COMPOSE_FILE)" cp ~/dev/devops/swarm_cluster dock-man-001:/opt/
+	@docker compose -f "$(TEST_COMPOSE_FILE)" -f "$(TEST_ANSIBLE_COMPOSE_FILE)" exec dock-man-001 sh -c "cd /opt/swarm_cluster/portainer && $(MAKE)" 
 
 .PHONY: test

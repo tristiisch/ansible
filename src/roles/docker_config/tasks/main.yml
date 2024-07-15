@@ -1,0 +1,25 @@
+- name: Ensure docker group exists
+  group:
+    name: docker
+    state: present
+
+- name: Ensure ansible user exists
+  user:
+    name: ansible
+    state: present
+
+- name: Add ansible user to docker group
+  user:
+    name: ansible
+    groups: docker
+    append: yes
+  register: user_result
+
+# - name: Reload user groups for ansible user
+#   community.general.reload_user_groups:
+#     name: ansible
+#   when: user_result.changed
+
+- name: Force SSH reconnection to apply new group membership
+  meta: reset_connection
+  # when: user_result.changed

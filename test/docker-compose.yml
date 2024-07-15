@@ -1,28 +1,16 @@
 services:
-  nginx-001:
+  dock-man-001: &id001
     build: ./debian
     ports:
-    - 91:80
+    - '80'
+    - '237'
+    - '9443'
+    - '9000'
     privileged: true
     volumes:
     - /sys/fs/cgroup:/sys/fs/cgroup:ro
-  nginx-002:
-    build: ./ubuntu
-    privileged: true
-    volumes:
-    - /sys/fs/cgroup:/sys/fs/cgroup:ro
-  nginx-003:
-    build: ./rocky
-    privileged: true
-    volumes:
-    - /sys/fs/cgroup:/sys/fs/cgroup:ro
-  nginx-004:
-    build: ./suse
-    privileged: true
-    volumes:
-    - /sys/fs/cgroup:/sys/fs/cgroup:ro
-  nginx-005:
-    build: ./archlinux
-    privileged: true
-    volumes:
-    - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  dock-man-002: *id001
+  dock-man-003: *id001
+  dock-wor-001: *id001
+  dock-wor-002: *id001
+  dock-wor-003: *id001

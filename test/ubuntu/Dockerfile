@@ -8,7 +8,7 @@ RUN apt upgrade -y
 RUN apt install -y systemd systemd-sysv
 
 RUN apt install -y \
-	python3 openssh-server sudo \
+	python3 python3-pip python3-packaging openssh-server sudo \
 	curl nano passwd \
 	htop net-tools iputils-ping netcat-openbsd dnsutils
 
