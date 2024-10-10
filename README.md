@@ -1,6 +1,6 @@
-# Ansible Project
+# Ansible Sandbox
 
-This project leverages **Ansible** to automate the configuration and deployment of both **virtual machines (VMs)** and **Docker containers**. The structure supports multiple Linux distributions and is ideal for testing and setting up environments using **VMs** or **Docker**.
+This project leverages **Ansible** to automate the configuration and deployment of both **VMs** and **Docker containers**. The structure supports multiple Linux distributions and is ideal for testing and setting up environments using **VMs** or **Docker**.
 
 ## Features
 
@@ -30,7 +30,7 @@ This project leverages **Ansible** to automate the configuration and deployment 
    - Set up **SSH** access on your VMs and specify the private key in `src/ansible.cfg`.
    
 2. **Run Playbooks**:
-   - Use the `play-vm` command to run playbooks on your VMs:
+   - Connect to Ansible VM, and run
      ```bash
      make play-vm <playbook>
      ```
@@ -106,7 +106,7 @@ This Ansible project includes several playbooks to automate the setup and config
 4. **network**  
    **Purpose**: Configures network settings.  
    **Features**:
-   - Disables specific network transmission options to optimize performance.
+   - Disables specific network transmission options to resolve issues with VMWare.
 
 5. **nginx**  
    **Purpose**: Installs and configures NGINX web server.  
