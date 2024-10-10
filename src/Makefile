@@ -35,3 +35,12 @@ dry-run:
 
 print-docker-version:
 	ansible -i $(INVENTORY) docker -m debug -a 'msg={{ docker_version }}'
+
+graph:
+	@ansible-inventory -i $(INVENTORY) --graph --vars
+
+graph-docker:
+	@ansible-inventory -i $(INVENTORY_DOCKER) --graph --vars
+
+graph-vm:
+	@ansible-inventory -i $(INVENTORY_VM) --graph --vars
