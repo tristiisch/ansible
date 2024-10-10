@@ -1,0 +1,2 @@
+- name: Install Python
+  ansible.builtin.raw: apt install -y python3

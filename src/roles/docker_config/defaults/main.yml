@@ -1,0 +1,3 @@
+metrics_host: "0.0.0.0"
+metrics_port: "9323"
+service_name: "docker"

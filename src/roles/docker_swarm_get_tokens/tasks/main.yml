@@ -2,10 +2,39 @@
   docker_swarm_info:
     unlock_key: true
   register: swarm_data
-  when: main_manager is defined and main_manager == inventory_hostname
+  when: in_cluster and is_manager
+
+# - debug:
+#     var: swarm_data
 
 - name: Save Docker Swarm Tokens
   set_fact:
     manager_token: "{{ swarm_data.swarm_facts.JoinTokens.Manager }}"
     worker_token: "{{ swarm_data.swarm_facts.JoinTokens.Worker }}"
-  when: main_manager is defined and main_manager == inventory_hostname
+  when: in_cluster and is_manager 
+
+- name: Checking tokens
+  set_fact:
+    all_manager_token_same: >-
+      {{
+        groups['docker_managers']
+          | map('extract', hostvars, 'manager_token')
+          | select('defined')
+          | unique
+          | list
+          | length <= 1
+      }}
+    all_worker_token_same: >-
+      {{
+        groups['docker_managers']
+          | map('extract', hostvars, 'worker_token')
+          | select('defined')
+          | unique
+          | list
+          | length <= 1
+      }}
+
+- name: Raise error if token values are not the same
+  fail:
+    msg: "They is more than one cluster between your nodes."
+  when: not all_manager_token_same or not all_worker_token_same

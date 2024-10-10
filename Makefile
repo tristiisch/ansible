@@ -55,7 +55,15 @@ docker-cli:
 	@docker compose -f "$(TEST_COMPOSE_FILE)" -f "$(TEST_ANSIBLE_COMPOSE_FILE)" exec ansible bash
 
 portainer:
-	@docker compose -f "$(TEST_COMPOSE_FILE)" -f "$(TEST_ANSIBLE_COMPOSE_FILE)" cp ~/dev/devops/swarm_cluster dock-man-001:/opt/
-	@docker compose -f "$(TEST_COMPOSE_FILE)" -f "$(TEST_ANSIBLE_COMPOSE_FILE)" exec dock-man-001 sh -c "cd /opt/swarm_cluster/portainer && $(MAKE)" 
+	@docker compose -f "$(TEST_COMPOSE_FILE)" -f "$(TEST_ANSIBLE_COMPOSE_FILE)" cp ~/dev/devops/swarm_cluster/portainer dock-man-001:/opt/
+	@docker compose -f "$(TEST_COMPOSE_FILE)" -f "$(TEST_ANSIBLE_COMPOSE_FILE)" exec dock-man-001 sh -c "cd /opt/portainer && $(MAKE)" 
+
+docker-full: docker-init-docker docker-start
+	@docker compose -f "$(TEST_COMPOSE_FILE)" -f "$(TEST_ANSIBLE_COMPOSE_FILE)" exec ansible sh -c "$(MAKE) play-docker ssh_account && $(MAKE) play-docker docker"
+	$(MAKE) portainer
+
+web:
+	@docker compose -f "$(TEST_COMPOSE_FILE)" -f "$(TEST_ANSIBLE_COMPOSE_FILE)" cp ~/dev/devops/web dock-man-001:/opt
+	@docker compose -f "$(TEST_COMPOSE_FILE)" -f "$(TEST_ANSIBLE_COMPOSE_FILE)" exec dock-man-001 sh -c "cd /opt/swarm_cluster/web && $(MAKE)" 
 
 .PHONY: test

@@ -3,23 +3,50 @@
   register: swarm_status
 
 - name: Print cluster error if any
-  debug:
-    var: swarm_status.host_info.Swarm.Error
+  fail:
+    msg: "{{ swarm_status.host_info.Swarm.Error }}"
   when: swarm_status.host_info.Swarm.Error != ''
+  ignore_errors: true
 
 - name: Set fact if the node is in the swarm
   set_fact:
-    in_cluster: "{{ swarm_status.host_info.Swarm.LocalNodeState == 'active' }}"
+    in_cluster: >-
+      {{
+        swarm_status.host_info.Swarm.LocalNodeState == 'active'
+        or swarm_status.host_info.Swarm.LocalNodeState == 'locked'
+      }}
+    is_stuck: >-
+      {{
+        swarm_status.host_info.Swarm.LocalNodeState == 'pending'
+        or swarm_status.host_info.Swarm.LocalNodeState == 'error'
+      }}
+    is_inactive: "{{ swarm_status.host_info.Swarm.LocalNodeState == 'inactive' }}"
 
 - name: Set fact if the node is a manager
   set_fact:
     is_manager: "{{ swarm_status.host_info.Swarm.ControlAvailable == true }}"
-  when: in_cluster
 
-- name: Get the first manager in the swarm
+- name: Retrive cluster state
   set_fact:
-    main_manager: "{{ inventory_hostname }}"
-  when: is_manager | default(false) and main_manager is not defined
+    cluster_exists: >-
+      {{
+        groups['docker_managers']
+        | map('extract', hostvars, 'is_manager')
+        | select('defined')
+        | list
+        | length > 0
+      }}
+    cluster_healthy: >-
+      {{
+        groups['docker_managers']
+        | map('extract', hostvars, 'in_cluster')
+        | select('defined')
+        | select('equalto', true)
+        | list | length > 0
+      }}
+
+# - debug:
+#     var: swarm_status.host_info.Swarm
 
 # - debug:
 #     var: swarm_status

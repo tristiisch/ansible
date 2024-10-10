@@ -3,7 +3,7 @@
   become: true
   roles:
     - nginx_install
-    
+
 - name: Configure NGinX
   hosts: web_nginx
   gather_facts: no

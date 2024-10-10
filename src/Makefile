@@ -1,9 +1,10 @@
 SOURCES				:=	.
 INVENTORY			:=	$(SOURCES)/inventory.yml
 INVENTORY_DOCKER 	:=	$(SOURCES)/inventory-docker.yml
+INVENTORY_VM	 	:=	$(SOURCES)/inventory-vm.yml
 PLAYBOOK_DIR		:=	$(SOURCES)/playbook
 DEFAULT_GROUP		:=	all
-RULE_WITH_ARGS		:=	play play-docker
+RULE_WITH_ARGS		:=	play play-docker play-vm
 
 ifeq ($(filter $(RULE_WITH_ARGS), $(firstword $(MAKECMDGOALS))),$(firstword $(MAKECMDGOALS)))
   RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -15,6 +16,9 @@ play:
 
 play-docker:
 	ansible-playbook -i $(INVENTORY_DOCKER) $(PLAYBOOK_DIR)/$(RUN_ARGS).yml
+
+play-vm:
+	ansible-playbook -i $(INVENTORY_VM) $(PLAYBOOK_DIR)/$(RUN_ARGS).yml
 
 ping:
 	ansible -i $(INVENTORY) $(DEFAULT_GROUP) -m ping
