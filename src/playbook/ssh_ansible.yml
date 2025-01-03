@@ -3,18 +3,23 @@
   hosts: localhost
   gather_facts: no
   roles:
-  - ssh_user_ansible_keygen
+    - ssh_user_ansible_keygen
 
 - name: Deploy ssh key on user Ansible
   hosts: ssh
   gather_facts: no
-  vars_files:
-    - group_vars/ssh_init.yml
+  vars_prompt:
+    - name: "ansible_user"
+      prompt: "Please enter the username to connect to the remote hosts"
+      private: no
+    - name: "ansible_password"
+      prompt: "Please enter the password to connect to the remote hosts"
+      private: no
   roles:
-  - ssh_user_ansible_create
+    - ssh_user_ansible_create
 
 - name: Test ssh connection on user Ansible
   hosts: ssh
   gather_facts: no
   roles:
-  - ssh_user_test
+    - ssh_user_test

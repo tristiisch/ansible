@@ -1,4 +1,4 @@
-- name: Create user {{ user_to_create }}
+- name: Create user {{ user_to_create }} using {{ ansible_user }}
   ansible.builtin.user:
     name: "{{ user_to_create }}"
     comment: "ansible node use this account using ssh"

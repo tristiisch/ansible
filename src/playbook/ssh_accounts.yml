@@ -3,16 +3,16 @@
   hosts: localhost
   gather_facts: no
   roles:
-  - ssh_users_keygen
+    - ssh_users_keygen
 
 - name: Set default shell
   hosts: ssh
   gather_facts: no
   roles:
-  - default_shell
+    - default_shell
 
 - name: Create ssh accounts
   hosts: ssh
   gather_facts: no
   roles:
-  - ssh_users_create
+    - ssh_users_create

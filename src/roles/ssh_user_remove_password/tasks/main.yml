@@ -8,7 +8,7 @@
     name: "{{ ssh_user_to_remove_password }}"
     state: present
 
-- name: Remove password of user_to_remove_password
+- name: Remove password of {{ ssh_user_to_remove_password }}
   user:
     name: "{{ ssh_user_to_remove_password }}"
     password: "*"

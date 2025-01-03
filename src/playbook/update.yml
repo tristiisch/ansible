@@ -2,4 +2,4 @@
   hosts: ssh
   gather_facts: no
   roles:
-  - apt_upgrade
+    - apt_upgrade
