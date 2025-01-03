@@ -1,62 +1,33 @@
 - name: Ensure docker group exists
-  group:
+  ansible.builtin.group:
     name: docker
     state: present
 
 - name: Ensure ansible user exists
-  user:
+  ansible.builtin.user:
     name: ansible
     state: present
 
 - name: Add ansible user to docker group
-  user:
+  ansible.builtin.user:
     name: ansible
     groups: docker
     append: yes
   register: user_result
 
-- name: Define Docker daemon configuration
-  template:
-    src: daemon.json.j2
-    dest: /etc/docker/daemon.json
-  notify:
-    - restart_docker
-
-# - name: Reload user groups for ansible user
-#   community.general.reload_user_groups:
-#     name: ansible
-#   when: user_result.changed
+# - name: Define Docker daemon configuration
+#   template:
+#     src: daemon.json.j2
+#     dest: /etc/docker/daemon.json
+#   notify:
+#     - restart_docker
 
 - name: Force SSH reconnection to apply new group membership
-  meta: reset_connection
-  # when: user_result.changed
+  ansible.builtin.meta: reset_connection
 
-- name: Starting policy - RestartSec
-  ansible.builtin.lineinfile:
-    path: /etc/systemd/system/{{ service_name }}.service.d/override.conf
-    create: yes
-    mode: '0644'
-    line: 'RestartSec=10'
-    insertafter: '^\[Service\]'
-  notify:
-    - reload_systemd
-
-- name: Starting policy - StartLimitBurst
-  ansible.builtin.lineinfile:
-    path: /etc/systemd/system/{{ service_name }}.service.d/override.conf
-    create: yes
-    mode: '0644'
-    line: 'StartLimitBurst=5'
-    insertafter: 'RestartSec=10'
-  notify:
-    - reload_systemd
-
-- name: Starting policy - StartLimitIntervalSec
-  ansible.builtin.lineinfile:
-    path: /etc/systemd/system/{{ service_name }}.service.d/override.conf
-    create: yes
-    mode: '0644'
-    line: 'StartLimitIntervalSec=30'
-    insertafter: 'StartLimitBurst=5'
-  notify:
-    - reload_systemd
+# - name: Define Docker service configuration
+#   template:
+#     src: docker.service.j2
+#     dest: /etc/systemd/system/{{ service_name }}.service.d/override.conf
+#   notify:
+#     - reload_systemd

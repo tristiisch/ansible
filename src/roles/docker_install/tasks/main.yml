@@ -28,8 +28,18 @@
 # - raw: sudo rm /etc/apt/sources.list.d/docker.list
 # - raw: sudo apt update
 
+# - name: Remove old Docker GPG key
+#   ansible.builtin.file:
+#     path: "/etc/apt/keyrings/docker.gpg"
+#     state: absent
+
+# - name: Remove old Docker repository
+#   ansible.builtin.file:
+#     path: "/etc/apt/sources.list.d/docker.list"
+#     state: absent
+
 - name: Install prerequisites for Docker on Debian/Ubuntu
-  package:
+  ansible.builtin.package:
     name:
       - apt-transport-https
       - ca-certificates
@@ -41,7 +51,7 @@
   when: ansible_os_family == 'Debian'
 
 - name: Install prerequisites for Docker on RedHat
-  package:
+  ansible.builtin.package:
     name:
       - yum-utils  # Required for yum-config-manager
       - device-mapper-persistent-data
@@ -50,18 +60,18 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Add Docker GPG key for Debian/Ubuntu
-  apt_key:
+  ansible.builtin.apt_key:
     url: https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg
   when: ansible_os_family == 'Debian'
 
 - name: Add Docker repository for Debian/Ubuntu
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable
     filename: docker
   when: ansible_os_family == 'Debian'
 
-- name: Add Docker GPG key and repository for Red Hat based systems
-  yum_repository:
+- name: Add Docker GPG key and repository on RedHat
+  ansible.builtin.yum_repository:
     name: docker
     description: Docker CE Stable - $basearch
     baseurl: https://download.docker.com/linux/rhel/{{ ansible_distribution_major_version }}/{{ ansible_architecture }}/stable
@@ -71,7 +81,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Install Docker
-  package:
+  ansible.builtin.package:
     name:
       - docker-ce
       - docker-ce-cli
@@ -81,12 +91,12 @@
     state: present
 
 - name: Start Docker service
-  service:
+  ansible.builtin.service:
     name: docker
     state: started
     enabled: yes
 
 - name: Install Docker Python package
-  package:
+  ansible.builtin.package:
     name: python3-docker
     state: present
