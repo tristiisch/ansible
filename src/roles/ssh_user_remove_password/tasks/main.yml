@@ -1,0 +1,15 @@
+- name: Verify that the {{ ssh_user_to_remove_password }} is not the ansible_user
+  fail:
+    msg: "The ssh_user_to_remove_password cannot be the same as the ansible_user. Aborting."
+  when: ssh_user_to_remove_password == ansible_user
+
+- name: Ensure the user account exists
+  user:
+    name: "{{ ssh_user_to_remove_password }}"
+    state: present
+
+- name: Remove password of user_to_remove_password
+  user:
+    name: "{{ ssh_user_to_remove_password }}"
+    password: "*"
+  become: true

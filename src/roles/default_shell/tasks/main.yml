@@ -1,0 +1,15 @@
+- name: Define default shell {{ shell_default }}
+  ansible.builtin.lineinfile:
+    path: /etc/default/useradd
+    regexp: '^SHELL='
+    line: 'SHELL={{ shell_default }}'
+    state: present
+  become: true
+
+- name: Define default home creation
+  ansible.builtin.lineinfile:
+    path: /etc/login.defs
+    regexp: '^CREATE_HOME '
+    line: 'CREATE_HOME yes'
+    state: present
+  become: true

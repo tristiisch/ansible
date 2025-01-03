@@ -1,0 +1,38 @@
+
+local:
+  hosts:
+    localhost:
+
+# ssh_init:
+#   children:
+#     docker:
+
+ssh:
+  children:
+    docker:
+
+docker:
+  children:
+    docker_managers:
+    docker_workers:
+  # vars:
+  #   ansible_ssh_private_key_file: ~/.ansible_keys/docker_lab
+  #   ansible_user: president
+  #   ansible_password: president
+  #   ssh_user_remove_password: president
+
+docker_managers:
+  hosts:
+    MANAGER001:
+      ansible_host: 192.168.1.211
+
+docker_workers:
+  hosts:
+    # WORKER001:
+    #   ansible_host: 192.168.1.221
+    WORKER002:
+      ansible_host: 192.168.1.222
+    # WORKER003:
+    #   ansible_host: 192.168.1.223
+    WORKER004:
+      ansible_host: 192.168.1.224

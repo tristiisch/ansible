@@ -1,0 +1,115 @@
+- name: Get the primary network interface
+  command: ip addr
+  register: ip_addr_output
+
+- name: Parse primary network interface
+  set_fact:
+    primary_interface: >-
+      {{ ip_addr_output.stdout_lines | select("search", 'state UP') | map("regex_replace", '^\d+:\s*(\S+):.*', '\1') | list | first }}
+
+- name: List files in /etc/netplan
+  find:
+    paths: /etc/netplan
+    patterns: "*.yaml"
+  register: netplan_files
+
+- name: Parse Netplan files as YAML
+  block:
+    - name: Load YAML content of each Netplan file
+      slurp:
+        src: "{{ item.path }}"
+      loop: "{{ netplan_files.files }}"
+      register: netplan_file_contents
+
+    - name: Parse YAML content into variables
+      set_fact:
+        parsed_netplan: >-
+          {{
+            parsed_netplan | default({}) |
+            combine({ item.item.path: (item.content | b64decode | from_yaml) })
+          }}
+      loop: "{{ netplan_file_contents.results }}"
+      # vars:
+      #   parsed_yaml: "{{ item.content | b64decode | from_yaml }}"
+
+- debug:
+    var: parsed_netplan
+
+- name: Find the file containing the primary interface
+  set_fact:
+    # netplan_file_with_interface: >-
+    #   {{
+    #     parsed_netplan.keys() | select("search", primary_interface) | list | first
+    #   }}
+    # netplan_file_with_interface: >-
+    #   {{
+    #     parsed_netplan | selectattr('network.ethernets', 'defined') | selectattr('network.ethernets', 'has_key', primary_interface) | map(attribute='file') | first
+    #   }}
+    # netplan_file_with_interface: >-
+    #   {{
+    #     parsed_netplan
+    #     | selectattr('network.ethernets.{{ primary_interface }}', 'defined')
+    #   }}
+    # netplan_file_with_interface: >-
+    #   {{
+    #     parsed_netplan.keys() | select("search", primary_interface) | list | first
+    #   }}
+    # # netplan_file_with_interface: >-
+    #   {{
+    #     parsed_netplan | selectattr('value.network.ethernets') | select("search", primary_interface)
+    #   }}
+
+- name: Check if wakeonlan is already set
+  set_fact:
+    wakeonlan_defined: >-
+      {{
+        parsed_netplan[netplan_file_with_interface]
+        .network.ethernets[primary_interface]
+        .get("wakeonlan", false)
+      }}
+
+- name: Append wakeonlan to the primary interface configuration
+  block:
+    - name: Add wakeonlan to YAML structure
+      set_fact:
+        updated_netplan: >-
+          {{
+            parsed_netplan[netplan_file_with_interface]
+            .network.ethernets[primary_interface].update({"wakeonlan": true})
+          }}
+
+    # - name: Write back the updated YAML file
+    #   copy:
+    #     dest: "{{ netplan_file_with_interface }}"
+    #     content: "{{ parsed_netplan[netplan_file_with_interface] | to_nice_yaml }}"
+    #   when: not wakeonlan_defined
+
+# - name: Get the file that owns the primary network interface
+#   block:
+#     - name: Find the file with the primary interface configuration
+#       command: grep -lr "{{ primary_interface }}" /etc/netplan
+#       register: interface_file
+#       failed_when: interface_file.rc != 0
+
+#     - name: Load the YAML configuration
+#       slurp:
+#         src: "{{ interface_file.stdout }}"
+#       register: yaml_data
+
+#     - name: Parse YAML content
+#       set_fact:
+#         netplan_config: "{{ yaml_data.content | b64decode | from_yaml }}"
+
+# - name: Add wakeonlan to the primary interface configuration
+#   block:
+#     - name: Check if wakeonlan is defined
+#       set_fact:
+#         wakeonlan_defined: >-
+#           {{ 'wakeonlan' in (netplan_config.network.ethernets[primary_interface] | default({})) }}
+
+    # - name: Append wakeonlan: true if not defined
+    #   lineinfile:
+    #     path: "{{ interface_file.stdout }}"
+    #     line: "            wakeonlan: true"
+    #     insertafter: "^            dhcp4:"
+    #   when: not wakeonlan_defined

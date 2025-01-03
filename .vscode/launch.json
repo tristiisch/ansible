@@ -7,7 +7,7 @@
 			"request": "launch",
 			"program": "${file}",
 			"console": "integratedTerminal",
-			"args": "-i ./src/inventory.yml -s ./test/debian/service.yml"
+			"args": "-i ./src/inventory.yml -s ./tests/debian/service.yml"
 		}
 	]
 }

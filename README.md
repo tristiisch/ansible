@@ -103,7 +103,7 @@ This Ansible project includes several playbooks to automate the setup and config
    - Collects system and network information from all hosts.
    - Useful for obtaining an overview of the infrastructure.
 
-4. **network**  
+4. **network_vware**  
    **Purpose**: Configures network settings.  
    **Features**:
    - Disables specific network transmission options to resolve issues with VMWare.
@@ -121,7 +121,7 @@ This Ansible project includes several playbooks to automate the setup and config
    - Installs Python on the target hosts.
    - Ensures Python is available for running other roles and tasks.
 
-7. **ssh_account**  
+7. **ssh**  
    **Purpose**: Manages SSH keys and accounts.  
    **Features**:
    - Generates and deploys SSH keys to specified hosts.

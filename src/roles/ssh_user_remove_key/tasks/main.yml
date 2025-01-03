@@ -1,0 +1,6 @@
+- name: Remove SSH key for {{ ssh_user_to_remove_key }}
+  ansible.posix.authorized_key:
+    user: "{{ ssh_user_to_remove_key }}"
+    key: "{{ lookup('file', '{{ key_dir }}/{{ key_public_name }}') }}"
+    state: absent
+  become: true
