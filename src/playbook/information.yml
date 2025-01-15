@@ -1,4 +1,4 @@
 - name: List servers
-  hosts: all
+  hosts: ssh
   roles:
     - informations

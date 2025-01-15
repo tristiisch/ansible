@@ -1,5 +1,5 @@
 - name: Configure netplan policy
-  hosts: all
+  hosts: ssh
   gather_facts: true
   become: true
   roles:

@@ -1,4 +1,4 @@
-- name: Remove ssh key on user Ansible
+- name: Disable ssh password on default user
   hosts: ssh
   gather_facts: no
   roles:

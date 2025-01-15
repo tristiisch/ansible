@@ -23,11 +23,11 @@ docker_managers:
 
 docker_workers:
   hosts:
-    # WORKER001:
-    #   ansible_host: 192.168.1.221
+    WORKER001:
+      ansible_host: 192.168.1.221
     WORKER002:
       ansible_host: 192.168.1.222
-    # WORKER003:
-    #   ansible_host: 192.168.1.223
+    WORKER003:
+      ansible_host: 192.168.1.223
     WORKER004:
       ansible_host: 192.168.1.224
