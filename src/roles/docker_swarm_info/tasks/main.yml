@@ -2,6 +2,9 @@
   docker_host_info:
   register: swarm_status
 
+- debug:
+    var: swarm_status.host_info.ServerVersion
+
 - name: Print cluster error if any
   fail:
     msg: "{{ swarm_status.host_info.Swarm.Error }}"

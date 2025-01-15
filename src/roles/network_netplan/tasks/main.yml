@@ -44,9 +44,6 @@
       - item.value.network.ethernets is defined
       - item.value.network.ethernets[primary_interface] is defined
 
-  - debug:
-      var: netplan_file_with_interface
-
   - name: Check if wakeonlan is already set
     set_fact:
       wakeonlan_defined: >-
