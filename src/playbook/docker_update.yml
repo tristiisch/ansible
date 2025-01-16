@@ -1,0 +1,6 @@
+- name: Update Docker
+  hosts: docker
+  become: true
+  serial: 1
+  roles:
+    - docker_update
