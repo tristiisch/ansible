@@ -1,0 +1,13 @@
+- name: Creates directory
+  ansible.builtin.file:
+    path: /etc/systemd/resolved.conf.d/
+    state: directory
+    owner: root
+    group: root
+
+- name: Define Docker daemon configuration
+  ansible.builtin.template:
+    src: resolved.conf.j2
+    dest: /etc/systemd/resolved.conf.d/disable.conf
+  notify:
+    - restart_systemd_resolved

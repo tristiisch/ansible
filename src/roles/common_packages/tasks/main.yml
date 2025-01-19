@@ -1,0 +1,24 @@
+- name: Update package index
+  ansible.builtin.package:
+    update_cache: yes
+
+- name: Install common packages on Debian, Ubuntu
+  ansible.builtin.package:
+    name:
+      - htop
+      - net-tools
+      - netcat-openbsd
+      - iputils-ping
+      - curl
+    state: present
+
+- name: Install common packages on Red Hat
+  ansible.builtin.package:
+    name:
+      - htop
+      - net-tools
+      - nc
+      - iputils
+      - curl
+    state: present
+  when: ansible_os_family == 'RedHat'

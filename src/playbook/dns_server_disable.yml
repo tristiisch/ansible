@@ -1,0 +1,5 @@
+- name: Disable local DNS server
+  hosts: ssh
+  become: true
+  roles:
+    - dns_server_disable
