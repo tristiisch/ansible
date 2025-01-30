@@ -1,0 +1,6 @@
+- name: Create folder for github runner
+  hosts: ssh
+  gather_facts: no
+  become: true
+  roles:
+    - folder_create
