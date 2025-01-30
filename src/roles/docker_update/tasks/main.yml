@@ -23,7 +23,17 @@
     update_cache: yes
   when: docker_update.changed
 
-- name: Wait between updates
-  pause:
-    minutes: 1
+- name: Ensure Docker service is started
+  ansible.builtin.systemd_service:
+    name: docker
+    state: started
+  register: docker_service
+  until: >
+    docker_service.status.ActiveState == 'active' and
+    (
+      (now(fmt='%s') | int - (docker_service.status.ActiveEnterTimestamp | to_datetime('%a %Y-%m-%d %H:%M:%S UTC')).timestamp()) | int
+    ) > 2160
+  retries: 6
+  delay: 10
+  check_mode: yes
   when: docker_update.changed

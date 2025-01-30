@@ -1,0 +1,11 @@
+{# Template not used #}
+
+/var/log/installer/*.log {
+	daily                {# Daily rotation #}
+	rotate 7             {# Keep 7 days of logs #}
+	compress             {# Compress logs after rotation #}
+	missingok            {# Ignore if the file is missing #}
+	notifempty           {# Do not rotate if the file is empty #}
+	dateext              {# Add date to the filename #}
+	create 0644 root root {# Create a log file with these permissions #}
+}

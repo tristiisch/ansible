@@ -5,3 +5,17 @@
   serial: 1
   roles:
     - docker_update
+
+- name: Update every package
+  hosts: docker
+  gather_facts: no
+  roles:
+    - apt_upgrade
+
+- name: Reboot if required
+  hosts: docker
+  gather_facts: no
+  become: true
+  serial: 1
+  roles:
+    - reboot_if_require
