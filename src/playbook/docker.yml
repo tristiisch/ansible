@@ -5,38 +5,45 @@
     - docker_install
     - docker_config
 
+- name: Install docker prune task
+  hosts: docker
+  gather_facts: false
+  become: true
+  roles:
+    - docker_prune
+
 - name: Get Docker Swarm Informations
   hosts: docker
-  gather_facts: no
+  gather_facts: false
   roles:
     - docker_swarm_info
 
 - name: Create cluster
   hosts: docker_managers
-  gather_facts: yes
+  gather_facts: true
   roles:
     - docker_swarm_create
 
 - name: Get Docker Swarm Informations
   hosts: docker
-  gather_facts: no
+  gather_facts: false
   roles:
     - docker_swarm_info
 
 - name: Get join tokens
   hosts: docker_managers
-  gather_facts: no
+  gather_facts: false
   roles:
     - docker_swarm_get_tokens
 
 - name: Join remaining managers to the swarm
   hosts: docker_managers
-  gather_facts: no 
+  gather_facts: false 
   roles:
     - docker_swarm_manager_join
 
 - name: Join remaining worker to the swarm
   hosts: docker_workers
-  gather_facts: no
+  gather_facts: false
   roles:
     - docker_swarm_worker_join

@@ -15,8 +15,8 @@
 - name: Join worker to the swarm
   docker_swarm:
     join_token: "{{ manager_info.worker_token }}"
-    remote_addrs: ["{{ manager_info.inventory_hostname }}:2377"]
-    advertise_addr: "{{ inventory_hostname }}:4567"
+    remote_addrs: ["{{ manager_info.ansible_default_ipv4.address }}:2377"]
+    advertise_addr: "{{ ansible_default_ipv4.address }}:4567"
     state: join
   register: manager_join_result
   when: in_cluster == false

@@ -1,6 +1,6 @@
 - name: Install logrotate
   hosts: ssh
-  gather_facts: no
+  gather_facts: false
   become: true
   roles:
     - logrotate

@@ -1,6 +1,6 @@
 - name: Update Docker
   hosts: docker
-  gather_facts: no
+  gather_facts: false
   become: true
   serial: 1
   roles:
@@ -8,13 +8,13 @@
 
 - name: Update every package
   hosts: docker
-  gather_facts: no
+  gather_facts: false
   roles:
     - apt_upgrade
 
 - name: Reboot if required
   hosts: docker
-  gather_facts: no
+  gather_facts: false
   become: true
   serial: 1
   roles:

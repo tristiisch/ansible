@@ -38,3 +38,24 @@ graph-vm:
 
 graph-lab:
 	@ansible-inventory -i $(INVENTORY_LAB) --graph --vars
+
+lab-init:
+	@ansible-playbook -i $(INVENTORY_LAB) \
+		$(PLAYBOOK_DIR)/ssh_ansible.yml
+
+lab-setup:
+	@ansible-playbook -i $(INVENTORY_LAB) \
+		$(PLAYBOOK_DIR)/ssh_accounts.yml \
+		$(PLAYBOOK_DIR)/ssh_secure.yml \
+		$(PLAYBOOK_DIR)/common_packages.yml \
+		$(PLAYBOOK_DIR)/information.yml \
+		$(PLAYBOOK_DIR)/logrotate.yml \
+		$(PLAYBOOK_DIR)/network_netplan.yml \
+		$(PLAYBOOK_DIR)/dns_server_disable.yml \
+		$(PLAYBOOK_DIR)/folder_create.yml \
+		$(PLAYBOOK_DIR)/docker.yml
+
+lab-update:
+	@ansible-playbook -i $(INVENTORY_LAB) \
+		$(PLAYBOOK_DIR)/docker_update.yml \
+		$(PLAYBOOK_DIR)/update.yml

@@ -20,6 +20,10 @@ docker_managers:
   hosts:
     MANAGER001:
       ansible_host: 192.168.1.211
+    MANAGER002:
+      ansible_host: 192.168.1.212
+    MANAGER003:
+      ansible_host: 192.168.1.213
 
 docker_workers:
   hosts:

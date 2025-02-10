@@ -1,0 +1,5 @@
+- name: Create folders
+  hosts: ssh
+  become: true
+  roles:
+    - folder_create

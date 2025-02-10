@@ -1,11 +1,11 @@
 - name: Remove ssh key on user Ansible
   hosts: ssh
-  gather_facts: no
+  gather_facts: false
   roles:
     - ssh_user_remove_key
 
 # - name: Delete users
 #   hosts: ssh
-#   gather_facts: no
+#   gather_facts: false
 #   roles:
 #   - ssh_users_delete

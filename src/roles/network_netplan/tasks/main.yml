@@ -1,15 +1,6 @@
-
-
-- name: Get the primary network interface
-  block:
-    - name: Get the primary network interface
-      command: ip addr
-      register: ip_addr_output
-
-    - name: Parse primary network interface
-      set_fact:
-        primary_interface: >-
-          {{ ip_addr_output.stdout_lines | select("search", 'state UP') | map("regex_replace", '^\d+:\s*(\S+):.*', '\1') | list | first }}
+- name: Get primary network interface
+  set_fact:
+    primary_interface: "{{ ansible_default_ipv4.interface }}"
 
 - name: Get Netplan files as YAML
   block:

@@ -1,6 +1,6 @@
 - name: Configure NTP (Chrony) without Python on target
   hosts: ntp_chrony
-  gather_facts: no
+  gather_facts: false
 
   vars:
     chrony_conf_template: ../config/template.conf.j2

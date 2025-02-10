@@ -32,3 +32,12 @@ ssh_users_to_create:
           "key_type": "ed25519"
       }
   ]
+folder_to_create:
+  [
+      {
+          "path": "/mnt/shared/volumes",
+          "owner": "president",
+          "group": "president",
+          "mode": "0777"
+      }
+  ]

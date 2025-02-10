@@ -1,6 +1,6 @@
 - name: Install common packages
   hosts: ssh
-  gather_facts: yes
+  gather_facts: true
   become: true
   roles:
     - common_packages

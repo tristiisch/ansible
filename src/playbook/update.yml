@@ -1,5 +1,13 @@
 - name: Update every package
   hosts: ssh
-  gather_facts: no
+  gather_facts: false
   roles:
     - apt_upgrade
+
+- name: Reboot if required
+  hosts: ssh
+  gather_facts: false
+  become: true
+  serial: 1
+  roles:
+    - reboot_if_require

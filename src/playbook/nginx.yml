@@ -6,14 +6,14 @@
 
 - name: Configure NGinX
   hosts: web_nginx
-  gather_facts: no
+  gather_facts: false
   become: true
   roles:
     - nginx_config
 
 - name: Test NGinX
   hosts: web_nginx
-  gather_facts: no
+  gather_facts: false
   roles:
     - nginx_test_domain
     # - nginx_test_ip

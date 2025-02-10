@@ -1,0 +1,10 @@
+[Unit]
+Description=Docker Prune
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStart=/bin/docker-prune --force --hours=1
+
+[Install]
+WantedBy=multi-user.target

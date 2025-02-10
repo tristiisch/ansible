@@ -1,3 +1,9 @@
+- name: Create groups
+  ansible.builtin.user:
+    name: "{{ item }}"
+  loop: "{{ ssh_users_to_create | map(attribute='groups') | flatten | unique }}"
+  become: true
+
 - name: Create users
   ansible.builtin.user:
     name: "{{ item.user }}"

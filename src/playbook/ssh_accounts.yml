@@ -1,18 +1,18 @@
 - name: Generate ssh keys
   connection: local
   hosts: localhost
-  gather_facts: no
+  gather_facts: false
   roles:
     - ssh_users_keygen
 
 - name: Set default shell
   hosts: ssh
-  gather_facts: no
+  gather_facts: false
   roles:
     - default_shell
 
 - name: Create ssh accounts
   hosts: ssh
-  gather_facts: no
+  gather_facts: false
   roles:
     - ssh_users_create
