@@ -23,7 +23,7 @@
     update_cache: yes
   when: docker_update.changed
 
-- name: Ensure Docker service is started
+- name: Ensure Docker runs for 1+ min
   ansible.builtin.systemd_service:
     name: docker
     state: started
@@ -31,9 +31,15 @@
   until: >
     docker_service.status.ActiveState == 'active' and
     (
-      (now(fmt='%s') | int - (docker_service.status.ActiveEnterTimestamp | to_datetime('%a %Y-%m-%d %H:%M:%S UTC')).timestamp()) | int
-    ) > 2160
-  retries: 6
+      (now(fmt='%s') | int)
+      - (
+        (ansible_date_time.epoch | int)
+        - (ansible_facts.uptime_seconds | int)
+        + (docker_service.status.ActiveEnterTimestampMonotonic | int / 1000000 | int)
+        | int
+      )
+    ) > 60
+  retries: 12
   delay: 10
   check_mode: yes
   when: docker_update.changed

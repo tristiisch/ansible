@@ -21,7 +21,6 @@ play-lab:
 	ansible-playbook -i $(INVENTORY_LAB) $(PLAYBOOK_DIR)/$(RUN_ARGS).yml
 
 # uptime:
-# 	# ansible -i $(INVENTORY) $(DEFAULT_GROUP) -m command -a uptime
 # 	ansible -i $(INVENTORY) $(DEFAULT_GROUP) -m raw -a uptime
 
 # gather-facts:
@@ -59,3 +58,6 @@ lab-update:
 	@ansible-playbook -i $(INVENTORY_LAB) \
 		$(PLAYBOOK_DIR)/docker_update.yml \
 		$(PLAYBOOK_DIR)/update.yml
+
+lab-ping:
+	@ansible -i $(INVENTORY_LAB) $(DEFAULT_GROUP) -m ping
