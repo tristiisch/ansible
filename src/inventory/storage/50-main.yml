@@ -1,0 +1,9 @@
+
+local:
+  hosts:
+    localhost:
+
+ssh:
+  hosts:
+    storage001:
+      ansible_host: 192.168.1.230

@@ -2,6 +2,7 @@ SOURCES				:=	.
 INVENTORY_DOCKER 	:=	$(SOURCES)/inventory/docker
 INVENTORY_VM	 	:=	$(SOURCES)/inventory/vm
 INVENTORY_LAB	 	:=	$(SOURCES)/inventory/lab
+INVENTORY_STORAGE 	:=	$(SOURCES)/inventory/storage
 PLAYBOOK_DIR		:=	$(SOURCES)/playbook
 DEFAULT_GROUP		:=	all
 RULE_WITH_ARGS		:=	play play-docker play-vm play-lab
@@ -19,6 +20,9 @@ play-vm:
 
 play-lab:
 	ansible-playbook -i $(INVENTORY_LAB) $(PLAYBOOK_DIR)/$(RUN_ARGS).yml
+
+play-storage:
+	ansible-playbook -i $(INVENTORY_STORAGE) $(PLAYBOOK_DIR)/$(RUN_ARGS).yml
 
 # uptime:
 # 	ansible -i $(INVENTORY) $(DEFAULT_GROUP) -m raw -a uptime
