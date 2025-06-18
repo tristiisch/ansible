@@ -1,0 +1,36 @@
+- name: Install NFS server packages
+  ansible.builtin.package:
+    name: nfs-kernel-server
+    state: present
+  become: true
+
+- name: Ensure export directories exist
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+  loop: "{{ nfs_exports }}"
+  become: true
+
+- name: Configure /etc/exports
+  ansible.builtin.blockinfile:
+    path: /etc/exports
+    block: |
+      {% for export in nfs_exports %}
+      {{ export.path }} {{ export.client_access }}({{ export.options }})
+      {% endfor %}
+    marker: "# {mark} ANSIBLE MANAGED NFS EXPORTS"
+  become: true
+
+- name: Apply NFS export configuration
+  ansible.builtin.command: exportfs -ra
+  become: true
+
+- name: Ensure NFS server is enabled and started
+  ansible.builtin.service:
+    name: nfs-kernel-server
+    enabled: true
+    state: started
+  become: true

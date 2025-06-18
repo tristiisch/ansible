@@ -1,0 +1,5 @@
+- name: Wake up
+  hosts: wol
+  gather_facts: false
+  roles:
+    - wol

@@ -1,0 +1,15 @@
+nfs_exports:
+  - path: /mnt/storage001
+    client_access: "192.168.1.0/24"
+    options: "rw,sync,no_subtree_check"
+    owner: nobody
+    group: nogroup
+    mode: "0777"
+
+nfs_mounts:
+  - server: "192.168.1.230"
+    remote_path: /mnt/storage001
+    local_path: /mnt/storage001
+    owner: nobody
+    group: nogroup
+    mode: "0777"

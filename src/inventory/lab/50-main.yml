@@ -3,13 +3,31 @@ local:
   hosts:
     localhost:
 
-# ssh_init:
-#   children:
-#     docker:
+wol:
+  children:
+    managers:
+    workers:
+    storers:
 
 ssh:
   children:
-    docker:
+    managers:
+    workers:
+    storers:
+
+nfs:
+  children:
+    nfs_servers:
+    nfs_clients:
+
+nfs_servers:
+  children:
+    storers:
+
+nfs_clients:
+  children:
+    managers:
+    workers:
 
 docker:
   children:
@@ -17,21 +35,44 @@ docker:
     docker_workers:
 
 docker_managers:
+  children:
+    managers:
+    storers:
+
+docker_workers:
+  children:
+    workers:
+    storers:
+
+managers:
   hosts:
     MANAGER001:
       ansible_host: 192.168.1.211
+      mac_address: "6C:02:E0:46:0A:90"
     MANAGER002:
       ansible_host: 192.168.1.212
+      mac_address: "6C:02:E0:42:A5:C0"
     MANAGER003:
       ansible_host: 192.168.1.213
+      mac_address: "6C:02:E0:42:A5:B5"
 
-docker_workers:
+workers:
   hosts:
     WORKER001:
       ansible_host: 192.168.1.221
+      mac_address: "6C:02:E0:45:DA:92"
     WORKER002:
       ansible_host: 192.168.1.222
+      mac_address: "6C:02:E0:46:0B:EE"
     WORKER003:
       ansible_host: 192.168.1.223
+      mac_address: "6C:02:E0:46:0A:2A"
     WORKER004:
       ansible_host: 192.168.1.224
+      mac_address: "6C:02:E0:45:D2:50"
+
+storers:
+  hosts:
+    STORAGE001:
+      ansible_host: 192.168.1.230
+      mac_address: "6C:02:E0:42:A4:FC"

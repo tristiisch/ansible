@@ -1,0 +1,8 @@
+- name: Wake on lan
+  community.general.wakeonlan:
+    mac: "{{ mac_address }}"
+    broadcast: "{{ wol_broadcast | default('255.255.255.255') }}"
+    port: "{{ wol_port | default(9) }}"
+  delegate_to: localhost
+  vars:
+    ansible_connection: local

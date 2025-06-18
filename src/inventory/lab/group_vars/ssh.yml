@@ -24,7 +24,8 @@ ssh_users_to_create:
           "groups":
             [
               "admin",
-              "docker"
+              "docker",
+              "adm"
             ],
           "sudoers": true,
           "key_dir": "~/.ansible_keys",

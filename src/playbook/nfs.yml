@@ -1,0 +1,12 @@
+- name: Install and configure NFS server
+  hosts: nfs_servers
+  gather_facts: false
+  roles:
+    - nfs_server
+
+- name: Install and configure NFS client
+  hosts: nfs_clients
+  gather_facts: false
+  serial: 1
+  roles:
+    - nfs_client
