@@ -7,6 +7,6 @@
 - name: Install and configure NFS client
   hosts: nfs_clients
   gather_facts: false
-  serial: 1
+  # serial: 1
   roles:
     - nfs_client

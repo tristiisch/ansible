@@ -4,6 +4,15 @@
     state: present
   become: true
 
+- name: Create root mountpoint
+  ansible.builtin.file:
+    path: "{{ nfs_export_root.path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  become: true
+
 - name: Ensure export directories exist
   ansible.builtin.file:
     path: "{{ item.path }}"
@@ -14,12 +23,33 @@
   loop: "{{ nfs_exports }}"
   become: true
 
+- name: Ensure mountpoint directories exist
+  ansible.builtin.file:
+    path: "{{ nfs_export_root.path }}/{{ item.name }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0777'
+  loop: "{{ nfs_exports }}"
+  become: true
+
+- name: Mount bind on root mountpoint
+  ansible.builtin.mount:
+    src: "{{ item.path }}"
+    path: "{{ nfs_export_root.path }}/{{ item.name }}"
+    fstype: none
+    opts: bind
+    state: mounted
+  loop: "{{ nfs_exports }}"
+  become: true
+
 - name: Configure /etc/exports
   ansible.builtin.blockinfile:
     path: /etc/exports
     block: |
-      {% for export in nfs_exports %}
-      {{ export.path }} {{ export.client_access }}({{ export.options }})
+      {{ nfs_export_root.path }} {{ nfs_export_root.client_access }}({{ nfs_export_root.options }})
+      {% for item in nfs_exports %}
+      {{ nfs_export_root.path }}/{{ item.name }} {{ item.client_access }}({{ item.options }})
       {% endfor %}
     marker: "# {mark} ANSIBLE MANAGED NFS EXPORTS"
   become: true

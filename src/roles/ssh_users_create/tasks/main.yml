@@ -4,6 +4,16 @@
   loop: "{{ ssh_users_to_create | map(attribute='groups') | flatten | unique }}"
   become: true
 
+- name: Create defaults groups
+  ansible.builtin.user:
+    name: "{{ item }}"
+  loop: "{{ ssh_users_to_create
+            | selectattr('default_group', 'defined')
+            | map(attribute='default_group')
+            | unique
+            | list }}"
+  become: true
+
 - name: Create users
   ansible.builtin.user:
     name: "{{ item.user }}"
@@ -11,6 +21,7 @@
     # Use '*' to disable password-based authentication while keeping the account active
     password: "*"
     groups: "{{ item.groups | default(omit) }}"
+    group: "{{ item.default_group | default(item.user) }}"
   register: users_created
   loop: "{{ ssh_users_to_create }}"
   become: true

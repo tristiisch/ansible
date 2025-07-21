@@ -1,15 +1,21 @@
+nfs_export_root:
+  path: /srv/nfs4
+  client_access: "192.168.1.0/24"
+  options: ro,fsid=0,no_subtree_check,crossmnt
+
 nfs_exports:
-  - path: /mnt/storage001
+  - name: storage001
+    path: /mnt/storage001
     client_access: "192.168.1.0/24"
-    options: "rw,sync,no_subtree_check"
-    owner: nobody
-    group: nogroup
+    options: rw,sync,no_subtree_check
+    owner: president
+    group: adm
     mode: "0777"
 
 nfs_mounts:
   - server: "192.168.1.230"
-    remote_path: /mnt/storage001
+    remote_path: /storage001
     local_path: /mnt/storage001
-    owner: nobody
-    group: nogroup
+    options: defaults,noatime,tcp,rsize=1048576,wsize=1048576,minorversion=1,nconnect=4
+    type: nfs4
     mode: "0777"
