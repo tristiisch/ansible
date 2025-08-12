@@ -5,7 +5,14 @@ ssh_user_to_remove_password: president
 sudoers_group: adm
 shell_default: /bin/bash
 ssh_users_to_create:
+  - user: president
+    password: "$6$rounds=100000$JCiJe9SqVoi9klVz$FDq6bZcnW9qPzMdaj.Rh.I.kEu1134SMD5opRNFurWwJZgwZe48x3xitZym5l3W3AuS7.H/WOJkJq90bU/JuG1"
+    comment: Default account
+    groups:
+      - adm
+    sudoers: false
   - user: deployer
+    password: "*"
     comment: Used to deploy applications
     groups:
       - docker
@@ -14,11 +21,12 @@ ssh_users_to_create:
     key_name: docker_lab_deployer
     key_type: ed25519
   - user: tristiisch
+    password: "*"
     comment: User account
     groups:
      - adm
      - docker
-    sudoers: true,
+    sudoers: false
     key_dir: ~/.ansible_keys
     key_name: docker_lab_tristiisch
     key_type: ed25519
@@ -27,4 +35,3 @@ folder_to_create:
     owner: president
     group: president
     mode: 0777
- 

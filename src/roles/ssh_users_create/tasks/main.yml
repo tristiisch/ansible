@@ -19,7 +19,7 @@
     name: "{{ item.user }}"
     comment: "{{ item.comment }}"
     # Use '*' to disable password-based authentication while keeping the account active
-    password: "*"
+    password: "{{ item.password }}"
     groups: "{{ item.groups | default(omit) }}"
     group: "{{ item.default_group | default(item.user) }}"
   register: users_created
@@ -56,12 +56,12 @@
     content: "%{{ sudoers_group }} ALL=(ALL) NOPASSWD: ALL\n"
   become: true
 
-- name: Remove users from the sudoers
-  ansible.builtin.file:
-    path: "/etc/sudoers.d/{{ item.user }}"
-    state: absent
-  loop: "{{ ssh_users_to_create | selectattr('sudoers', 'equalto', true) | list }}"
-  become: true
+# - name: Remove users from the sudoers
+#   ansible.builtin.file:
+#     path: "/etc/sudoers.d/{{ item.user }}"
+#     state: absent
+#   loop: "{{ ssh_users_to_create | selectattr('sudoers', 'equalto', true) | list }}"
+#   become: true
 
 - name: Deploy SSH keys
   ansible.posix.authorized_key:

@@ -7,7 +7,7 @@ nfs_exports:
   - name: storage001
     path: /mnt/storage001
     client_access: "192.168.1.0/24"
-    options: rw,sync,no_subtree_check
+    options: rw,async,no_subtree_check
     owner: president
     group: adm
     mode: "0777"
@@ -16,6 +16,7 @@ nfs_mounts:
   - server: "192.168.1.230"
     remote_path: /storage001
     local_path: /mnt/storage001
-    options: defaults,noatime,tcp,rsize=1048576,wsize=1048576,minorversion=1,nconnect=4
+    options: vers=4.2,defaults,noatime,tcp,rsize=1048576,wsize=1048576,minorversion=1,nconnect=8,fsc
     type: nfs4
     mode: "0777"
+    cachefilesd: true

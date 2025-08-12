@@ -1,0 +1,9 @@
+- name: restart_cachefilesd
+  ansible.builtin.service:
+    name: cachefilesd
+    state: restarted
+  become: true
+
+- name: reload_systemd_deamon
+  service:
+    daemon_reload: true

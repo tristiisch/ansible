@@ -4,13 +4,41 @@
     state: present
   become: true
 
+- name: Install cachefilesd package
+  ansible.builtin.package:
+    name: cachefilesd
+    state: present
+  become: true
+  when: "'true' in [item.cachefilesd | default('false') | string | lower] "
+  loop: "{{ nfs_mounts }}"
+
+- name: Ensure cachefilesd service is started and enabled
+  ansible.builtin.systemd:
+    name: cachefilesd
+    state: started
+    enabled: yes
+  become: true
+  when: "'true' in [item.cachefilesd | default('false') | string | lower]"
+  loop: "{{ nfs_mounts }}"
+
+- name: Configure cachefilesd
+  ansible.builtin.blockinfile:
+    path: /etc/default/cachefilesd
+    block: |
+      RUN=yes
+    marker: "# {mark} ANSIBLE MANAGED NFS EXPORTS"
+  become: true
+  when: "'true' in [item.cachefilesd | default('false') | string | lower]"
+  loop: "{{ nfs_mounts }}"
+  notify: restart_cachefilesd
+
 - name: Ensure local mount directories exist
   ansible.builtin.file:
     path: "{{ item.local_path }}"
     state: directory
     mode: "{{ item.mode | default('0755') }}"
-  loop: "{{ nfs_mounts }}"
   become: true
+  loop: "{{ nfs_mounts }}"
 
 - name: Mount NFS shares
   ansible.builtin.mount:
@@ -19,8 +47,8 @@
     fstype: "{{ item.type }}"
     opts: "{{ item.options }}"
     state: mounted
-  loop: "{{ nfs_mounts }}"
   become: true
+  loop: "{{ nfs_mounts }}"
 
 - name: Ensure NFS mounts are persistent in fstab
   ansible.builtin.mount:
@@ -29,5 +57,5 @@
     fstype: "{{ item.type }}"
     opts: "{{ item.options }}"
     state: present
-  loop: "{{ nfs_mounts }}"
   become: true
+  loop: "{{ nfs_mounts }}"
