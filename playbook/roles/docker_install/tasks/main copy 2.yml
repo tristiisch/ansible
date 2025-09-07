@@ -1,0 +1,139 @@
+- name: Uninstall old Docker on Debian/Ubuntu
+  package:
+    name:
+      - docker.io
+      - docker-compose
+      - docker-doc
+      - podman-docker
+    state: absent
+  when: ansible_os_family == 'Debian'
+
+- name: Uninstall old Docker on RedHat
+  package:
+    name:
+      - docker
+      - docker-client
+      - docker-client-latest
+      - docker-common
+      - docker-latest
+      - docker-latest-logrotate
+      - docker-logrotate
+      - docker-engine
+      - podman
+      - runc
+    state: absent
+  when: ansible_os_family == 'RedHat'
+
+- name: Uninstall old Docker on Suse
+  package:
+    name:
+      - docker
+      - docker-client
+      - docker-client-latest
+      - docker-common
+      - docker-latest
+      - docker-latest-logrotate
+      - docker-logrotate
+      - docker-engine
+      - runc
+    state: absent
+  when: ansible_os_family == 'Suse'
+
+- name: Install prerequisites for Docker on Debian/Ubuntu
+  package:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release  # Needed on some Debian-based systems
+      - wget  # Needed on some distributions
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Install prerequisites for Docker on RedHat
+  package:
+    name:
+      - yum-utils  # Required for yum-config-manager
+      - device-mapper-persistent-data
+      - lvm2
+    state: present
+  when: ansible_os_family == 'RedHat'
+
+- name: Add Docker GPG key and repository for Debian/Ubuntu
+  apt_key:
+    url: https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg
+  when: ansible_os_family == 'Debian'
+
+- name: Add Docker repository for Debian/Ubuntu
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable
+    # repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable
+    # repo: 'download.docker.com/'
+  when: ansible_os_family == 'Debian'
+
+# - debug:
+#     msg: "https://download.docker.com/linux/rhel/{{ ansible_distribution_major_version }}/{{ ansible_architecture }}/stable"
+#   when: ansible_os_family == 'RedHat'
+
+- name: Add Docker GPG key and repository for Red Hat based systems
+  yum_repository:
+    name: docker
+    description: Docker CE Stable - $basearch
+    baseurl: https://download.docker.com/linux/rhel/{{ ansible_distribution_major_version }}/{{ ansible_architecture }}/stable
+    gpgkey: https://download.docker.com/linux/rhel/gpg
+    gpgcheck: yes
+    enabled: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Add Docker repository for openSUSE
+  zypper_repository:
+    # name: docker
+    # name: docker
+    # repo: https://download.docker.com/linux/sles/15/stable/s390x
+    # repo: https://download.docker.com/linux/sles
+    # repo: https://download.docker.com/linux/sles/15/$basearch/stable
+    # gpgkey: https://download.docker.com/linux/sles/gpg
+    # repo: https://download.docker.com/linux/sles/15/$basearch/stable
+    # repo: https://download.docker.com/linux/sles
+    auto_import_keys: true
+    # repo: https://download.docker.com/linux/sles/
+    repo: https://download.opensuse.org/repositories/security:/SELinux/openSUSE_Factory/security:SELinux.repo
+    priority: 1
+  when: ansible_os_family == 'Suse'
+
+- name: Add Docker repository for openSUSE x2
+  zypper_repository:
+    name: docker-ce-stable
+    repo: https://download.docker.com/linux/sles/15/s390x/stable
+    # auto_import_keys: true
+    priority: 1
+  when: ansible_os_family == 'Suse'
+
+# - name: Install Docker on Debian/Ubuntu
+- name: Install Docker
+  package:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+  # when: ansible_os_family == 'Debian' or ansible_os_family == 'Suse'
+
+# - name: Install Docker on RedHat/Suse/Archlinux
+#   package:
+#     name: docker-ce
+#     state: present
+#   when: ansible_os_family in ('RedHat', 'Suse', 'Archlinux')
+
+- name: Start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+  # when: ansible_os_family == 'RedHat'
+  # when: ansible_os_family == 'Debian' or ansible_os_family == 'Suse'
+  # when: ansible_os_family in ('Debian', 'RedHat', 'Suse', 'Archlinux')
+

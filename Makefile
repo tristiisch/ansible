@@ -10,10 +10,10 @@
 
 include .env
 
-ANSIBLE_DIR=./src
+# ANSIBLE_DIR=./src
+ANSIBLE_DIR=.
 INVENTORIES_DIR=$(ANSIBLE_DIR)/inventory
 PLAYBOOKS_DIR=$(ANSIBLE_DIR)/playbook
-ROLES_DIR=$(ANSIBLE_DIR)/roles
 RULE_WITH_ARGS=play
 
 ifeq ($(filter $(RULE_WITH_ARGS), $(firstword $(MAKECMDGOALS))),$(firstword $(MAKECMDGOALS)))
@@ -34,16 +34,15 @@ docker:
 		bash
 
 play:
-# FIX ROLES_DIR
-	ansible-playbook -M $(ROLES_DIR) $(PLAYBOOKS_DIR)/$(RUN_ARGS).yml -i $(INVENTORIES_DIR)/$(ANSIBLE_ENV)
+	ansible-playbook $(PLAYBOOKS_DIR)/$(RUN_ARGS).yml -i $(INVENTORIES_DIR)/$(ANSIBLE_ENV)
 
 uptime:
-	ansible -i $(INVENTORIES_DIR)/$(ANSIBLE_ENV) ssh -m raw -a uptime
+	ansible -i $(INVENTORIES_DIR)/$(ANSIBLE_ENV) ssh -m raw -a "uptime"
 
 gather-facts:
 	ansible -i $(INVENTORIES_DIR)/$(ANSIBLE_ENV) ssh -m setup
 
-dry-run:
+ping:
 	ansible -i $(INVENTORIES_DIR)/$(ANSIBLE_ENV) ssh --check --diff -m ping
 
 

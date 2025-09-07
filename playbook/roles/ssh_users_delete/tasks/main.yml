@@ -1,0 +1,28 @@
+# - name: Getting process IDs
+#   community.general.pids:
+#     pattern: ".*"
+#   register: all_pids
+
+# - ansible.builtin.debug:
+#     msg: "{{ all_pids }}"
+
+# - name: Filter and set user-specific PIDs
+#   ansible.builtin.set_fact:
+#     user_pids: >-
+#       {{
+#         all_pids.processes | selectattr('user', '==', item.user) | map(attribute='pid') | list
+#       }}
+#   loop: "{{ ssh_users_to_create }}"
+#   loop_control:
+#     label: "{{ item.user }}"
+
+# - ansible.builtin.debug:
+#     msg: "{{ user_pids }}"
+
+- name: Delete users
+  ansible.builtin.user:
+    name: "{{ item.user }}"
+    state: absent
+  register: users_created
+  loop: "{{ ssh_users_to_create }}"
+  become: true
