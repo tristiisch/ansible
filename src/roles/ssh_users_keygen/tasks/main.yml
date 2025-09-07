@@ -1,5 +1,5 @@
 - name: Filter users with key_dir and key_name defined
-  set_fact:
+  ansible.builtin.set_fact:
     users_with_keys: >-
       {{
         ssh_users_to_create
@@ -9,7 +9,7 @@
       }}
 
 - name: Ensure directory exists for SSH keys
-  file:
+  ansible.builtin.file:
     path: "{{ item.key_dir }}"
     state: directory
     mode: '0700'
@@ -21,6 +21,7 @@
   community.crypto.openssh_keypair:
     path: "{{ item.key_dir }}/{{ item.key_name }}"
     type: "{{ item.key_type | default('rsa') }}"
+    regenerate: 'partial_idempotence'
     state: present
     force: no
   loop: "{{ users_with_keys }}"
