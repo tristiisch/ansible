@@ -25,7 +25,7 @@
 - name: Enable NGinX to start at boot
   service:
     name: nginx
-    enabled: yes
+    enabled: true
 
 - name: Ensure NGinX is running
   service:

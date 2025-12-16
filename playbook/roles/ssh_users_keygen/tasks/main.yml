@@ -23,7 +23,7 @@
     type: "{{ item.key_type | default('rsa') }}"
     regenerate: 'partial_idempotence'
     state: present
-    force: no
+    force: false
   loop: "{{ users_with_keys }}"
   loop_control:
     label: "{{ item.user }}"

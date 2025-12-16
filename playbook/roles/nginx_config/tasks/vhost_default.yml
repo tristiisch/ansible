@@ -17,7 +17,7 @@
   file:
     path: "{{ nginx_default_root }}"
     state: directory
-    recurse: yes
+    recurse: true
     owner: "{{ nginx_admin_user }}"
     group: "{{ nginx_process_group}}"
     mode: 0650

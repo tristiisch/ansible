@@ -12,7 +12,7 @@
   ansible.builtin.user:
     name: ansible
     groups: docker
-    append: yes
+    append: true
   register: user_result
 
 # - name: Define Docker daemon configuration

@@ -7,9 +7,9 @@
       - docker-buildx-plugin
       - docker-compose-plugin
     state: latest
-    update_cache: yes
+    update_cache: true
   register: docker_update
-  check_mode: yes
+  check_mode: true
 
 - name: Update docker package if update is needed
   ansible.builtin.package:
@@ -20,7 +20,7 @@
       - docker-buildx-plugin
       - docker-compose-plugin
     state: latest
-    update_cache: yes
+    update_cache: true
   when: docker_update.changed
 
 - name: Ensure Docker runs for 1+ min
@@ -41,5 +41,5 @@
     ) > 60
   retries: 12
   delay: 10
-  check_mode: yes
+  check_mode: true
   when: docker_update.changed

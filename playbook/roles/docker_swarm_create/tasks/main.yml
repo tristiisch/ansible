@@ -5,7 +5,7 @@
   when: not cluster_exists or not cluster_healthy
 
 - name: Initialize Docker Swarm
-  docker_swarm:
+  community.docker.docker_swarm:
     state: present
     force: "{{ not cluster_healthy }}"
     data_path_addr: "{{ hostvars[random_host].ansible_env.SSH_CLIENT.split(' ')[0] }}"

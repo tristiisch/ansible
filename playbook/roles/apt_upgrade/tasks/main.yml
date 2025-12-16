@@ -1,23 +1,23 @@
 - name: APT update
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
-  become: yes
+  become: true
 
 - name: APT upgrade
   ansible.builtin.apt:
     upgrade: safe
     state: latest
-  become: yes
+  become: true
 
 - name: APT auto-remove
   ansible.builtin.apt:
-    autoremove: yes
+    autoremove: true
     purge: true
-  become: yes
+  become: true
 
 - name: APT clean
   ansible.builtin.apt:
-    autoclean: yes
-    clean: yes
-  become: yes
+    autoclean: true
+    clean: true
+  become: true

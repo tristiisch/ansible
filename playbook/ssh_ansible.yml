@@ -11,15 +11,15 @@
   vars_prompt:
     - name: "ansible_user"
       prompt: "Default user"
-      private: no
+      private: false
       default: "{{ ansible_user | default('') }}"
     - name: "ansible_password"
       prompt: "Default password"
-      private: yes
+      private: true
       default: "{{ ansible_password | default('') }}"
     - name: "ansible_become_pass"
       prompt: "Sudo password"
-      private: yes
+      private: true
       default: "{{ ansible_become_pass | default('') }}"
   roles:
     - ssh_user_ansible_create

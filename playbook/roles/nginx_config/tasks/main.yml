@@ -7,7 +7,7 @@
   copy:
     src: "{{ nginx_config_dir }}/nginx.conf"
     dest: "{{ nginx_config_dir }}/nginx.backup.conf"
-    remote_src: yes
+    remote_src: true
   when: not backup_file_exists.stat.exists
 
 - name: Copy NGinX conf
@@ -37,10 +37,10 @@
   user:
     name: nginx
     comment: "Nginx web server"
-    system: yes
+    system: true
     shell: "{{ nginx_user_shell }}"
     home: "{{ nginx_user_workdir }}"
-    create_home: no
+    create_home: false
   when: not user_exists
 
 - name: Create sites_enabled folder
@@ -63,7 +63,7 @@
   service:
     name: nginx
     state: started
-    enabled: yes
+    enabled: true
 
 - name: Flush handlers
   meta: flush_handlers

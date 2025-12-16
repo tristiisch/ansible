@@ -30,6 +30,6 @@
 - name: Deploy SSH key for {{ user_to_create }}
   ansible.posix.authorized_key:
     user: "{{ user_created.name }}"
-    key: "{{ lookup('file', '{{ key_dir }}/{{ key_public_name }}') }}"
+    key: "{{ lookup('file', key_dir ~ '/' ~ key_public_name) }}"
     comment: "ansible@{{ inventory_hostname }}"
   become: true

@@ -8,7 +8,7 @@
   file:
     path: "{{ nginx_errors_path }}"
     state: directory
-    recurse: yes
+    recurse: true
     owner: "{{ nginx_admin_user }}"
     group: "{{ nginx_process_group}}"
     mode: 0650

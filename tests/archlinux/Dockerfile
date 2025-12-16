@@ -9,17 +9,17 @@ RUN pacman -S --noconfirm \
     htop net-tools iputils openbsd-netcat bind \
 	openssl
 
-RUN useradd -m president \
-	&& chmod 700 -R /home/president \
-	&& echo 'president:P@ssword!' | chpasswd \
-	&& echo 'president ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/president
+RUN useradd -m president && \
+	chmod 700 -R /home/president && \
+	echo 'president:P@ssword!' | chpasswd && \
+	echo 'president ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/president
 
-RUN ssh-keygen -A \
-	&& echo 'PermitRootLogin no' >> /etc/ssh/sshd_config.d/custom \
-	&& echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config.d/custom
+RUN ssh-keygen -A && \
+	echo 'PermitRootLogin no' >> /etc/ssh/sshd_config.d/custom && \
+	echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config.d/custom
 
-RUN mkdir -p /run/systemd \
-	&& echo 'docker' > /run/systemd/container
+RUN mkdir -p /run/systemd && \
+	echo 'docker' > /run/systemd/container
 
 # USER president
 # CMD ["sudo", "/usr/sbin/sshd", "-D"]

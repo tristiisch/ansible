@@ -1,6 +1,6 @@
-- name: Test ssh connection {{ ansible_user }}
-  ping:
+- name: Test ssh connection
+  ansible.builtin.ping:
 
-- name: Test SSH connection {{ ansible_user }} with elevated privileges
-  ping:
-  become: yes
+- name: Test SSH connection with elevated privileges
+  ansible.builtin.ping:
+  become: true

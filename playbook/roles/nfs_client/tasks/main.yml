@@ -16,7 +16,7 @@
   ansible.builtin.systemd:
     name: cachefilesd
     state: started
-    enabled: yes
+    enabled: true
   become: true
   when: "'true' in [item.cachefilesd | default('false') | string | lower]"
   loop: "{{ nfs_mounts }}"

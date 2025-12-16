@@ -14,5 +14,5 @@
     path: "{{ key_dir }}/{{ key_private_name }}"
     type: "{{ key_type }}"
     state: present
-    force: no
+    force: false
   when: not ssh_key_stat.stat.exists

@@ -1,5 +1,9 @@
 services:
   ansible:
     build: ./ansible
+    environment:
+      ANSIBLE_ENV: docker
+      ANSIBLE_REMOTE_USER: ansible
+      ANSIBLE_PRIVATE_KEY_FILE: ~/.ansible_keys/docker_lab
     volumes:
-      - ../src:/opt/ansible
+      - ../:/opt/ansible

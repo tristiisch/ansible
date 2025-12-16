@@ -1,35 +1,35 @@
 - name: Print Kernel
-  debug:
+  ansible.builtin.debug:
     msg: "{{ ansible_facts['kernel'] }} {{ ansible_facts['kernel_version'] }}"
 
 - name: Print OS
-  debug:
+  ansible.builtin.debug:
     msg: "{{ ansible_os_family }} - {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }} ({{ ansible_facts['distribution_release'] }})"
 
 - name: Print Arch
-  debug:
+  ansible.builtin.debug:
     msg: "{{ ansible_facts['architecture'] }}"
 
 - name: Print Hostname
-  debug:
+  ansible.builtin.debug:
     msg: "{{ ansible_facts['hostname'] }}"
 
 - name: Print FQDN
-  debug:
+  ansible.builtin.debug:
     msg: "{{ ansible_facts['fqdn'] }}"
 
 - name: Print Date
-  debug:
+  ansible.builtin.debug:
     msg: "{{ ansible_facts['date_time']['date'] }} {{ ansible_facts['date_time']['time'] }} {{ ansible_facts['date_time']['tz'] }}"
 
 - name: Print ansible user, home, shell
-  debug:
+  ansible.builtin.debug:
     msg: "{{ ansible_facts['user_id'] }} {{ ansible_facts['user_dir'] }} {{ ansible_facts['user_shell'] }}"
 
 - name: Print Package Manager
-  debug:
+  ansible.builtin.debug:
     msg: "{{ ansible_facts['pkg_mgr'] }}"
 
 - name: Print Python version
-  debug:
+  ansible.builtin.debug:
     msg: "{{ ansible_facts['python_version'] }}"

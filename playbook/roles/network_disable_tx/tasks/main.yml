@@ -12,5 +12,5 @@
     section: "post-up ethtool -K {{ default_interface }} tx-checksum-ip-generic off"
     option: ""
     value: ""
-    no_extra_spaces: yes
+    no_extra_spaces: true
   notify: restart_networking
