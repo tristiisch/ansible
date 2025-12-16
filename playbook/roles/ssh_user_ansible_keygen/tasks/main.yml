@@ -1,0 +1,18 @@
+- name: Ensure directory exists for SSH keys
+  file:
+    path: "{{ key_dir }}"
+    state: directory
+    mode: '0700'
+
+- name: Check if SSH private key {{ key_private_name }} already exists
+  stat:
+    path: "{{ key_dir }}/{{ key_private_name }}"
+  register: ssh_key_stat
+
+- name: Generate SSH key if it does not exist
+  openssh_keypair:
+    path: "{{ key_dir }}/{{ key_private_name }}"
+    type: "{{ key_type }}"
+    state: present
+    force: false
+  when: not ssh_key_stat.stat.exists

@@ -22,13 +22,13 @@ This project leverages **Ansible** to automate the configuration and deployment 
 
 ### VM Setup
 
-1. **Configure VMs**:  
+1. **Configure VMs**:
    - Update `src/inventory-vm.yml` with your VMs' details.
    - Mount the `./src` directory into the Ansible VM.
    - Install **Ansible**, **Python3**, and **Make** in the Ansible VM.
    - Ensure the Ansible VM and other VMs are on the same network.
    - Set up **SSH** access on your VMs and specify the private key in `src/ansible.cfg`.
-   
+
 2. **Run Playbooks**:
    - Connect to Ansible VM, and run
      ```bash
@@ -82,14 +82,14 @@ This Ansible project includes several playbooks to automate the setup and config
 
 ### Playbooks Overview
 
-1. **chrony**  
-   **Purpose**: Configures Chrony for time synchronization.  
+1. **chrony**
+   **Purpose**: Configures Chrony for time synchronization.
    **Features**:
    - Installs and configures Chrony for NTP services.
    - Ensures that time synchronization is set up correctly across defined hosts.
 
-2. **docker**  
-   **Purpose**: Installs Docker and sets up a Docker Swarm cluster.  
+2. **docker**
+   **Purpose**: Installs Docker and sets up a Docker Swarm cluster.
    **Features**:
    - Installs Docker.
    - Configures Docker daemon settings.
@@ -97,32 +97,32 @@ This Ansible project includes several playbooks to automate the setup and config
    - Manages Docker Swarm by gathering information, obtaining join tokens, and adding managers and workers.
    - Repair a broken Docker Swarm cluster.
 
-3. **information**  
-   **Purpose**: Gathers information from servers.  
+3. **information**
+   **Purpose**: Gathers information from servers.
    **Features**:
    - Collects system and network information from all hosts.
    - Useful for obtaining an overview of the infrastructure.
 
-4. **network_vware**  
-   **Purpose**: Configures network settings.  
+4. **network_vware**
+   **Purpose**: Configures network settings.
    **Features**:
    - Disables specific network transmission options to resolve issues with VMWare.
 
-5. **nginx**  
-   **Purpose**: Installs and configures NGINX web server.  
+5. **nginx**
+   **Purpose**: Installs and configures NGINX web server.
    **Features**:
    - Installs NGINX on the web servers.
    - Configures NGINX with custom templates.
    - Runs tests to verify the NGINX setup.
 
-6. **python**  
-   **Purpose**: Installs Python on all servers.  
+6. **python**
+   **Purpose**: Installs Python on all servers.
    **Features**:
    - Installs Python on the target hosts.
    - Ensures Python is available for running other roles and tasks.
 
-7. **ssh**  
-   **Purpose**: Manages SSH keys and accounts.  
+7. **ssh**
+   **Purpose**: Manages SSH keys and accounts.
    **Features**:
    - Generates and deploys SSH keys to specified hosts.
    - Creates SSH users and tests SSH connections.

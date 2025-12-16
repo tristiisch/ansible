@@ -1,0 +1,39 @@
+- name: Check HTTP status
+  uri:
+    url: "http://{{ inventory_hostname }}"
+    method: GET
+    status_code: [200, 202, 204, 205, 206]
+    return_content: true
+  register: result
+  delegate_to: localhost
+  # ignore_errors: true
+
+# - debug:
+#     var: result
+
+# - name: Print NGinX versions
+#   debug:
+#     msg: "{{ result.server }}"
+#   ignore_errors: true
+
+- name: Print response content
+  debug:
+    msg: "{{ result.content }}"
+  ignore_errors: true
+
+- name: Fail task if HTTP request failed
+  fail:
+    msg: "HTTP request to {{ inventory_hostname }} failed with status {{ result.status }}"
+  when: result is failed
+
+
+# - name: Print result for each host
+#   debug:
+#     msg: "HTTP status code from {{ item.item }}: {{ item.status }}"
+#   with_items: "{{ result.results }}"
+
+# - name: Fail if any host has status code other than expected
+#   fail:
+#     msg: "Expected HTTP status code 200 from at least one host, but got different status(es)."
+#   when: "'200' not in hostvars[item.item].result.status|default({}) | string"
+#   with_items: "{{ result.results }}"

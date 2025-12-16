@@ -1,0 +1,31 @@
+- name: Generate ssh key
+  connection: local
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - ssh_user_ansible_keygen
+
+- name: Deploy ssh key on user Ansible
+  hosts: ssh
+  gather_facts: false
+  vars_prompt:
+    - name: "ansible_user"
+      prompt: "Default user"
+      private: false
+      default: "{{ ansible_user | default('') }}"
+    - name: "ansible_password"
+      prompt: "Default password"
+      private: true
+      default: "{{ ansible_password | default('') }}"
+    - name: "ansible_become_pass"
+      prompt: "Sudo password"
+      private: true
+      default: "{{ ansible_become_pass | default('') }}"
+  roles:
+    - ssh_user_ansible_create
+
+- name: Test ssh connection on user Ansible
+  hosts: ssh
+  gather_facts: false
+  roles:
+    - ssh_user_test

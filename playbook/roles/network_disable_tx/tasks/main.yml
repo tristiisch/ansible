@@ -1,0 +1,16 @@
+- name: Get default route interface
+  ansible.builtin.set_fact:
+    default_interface: "{{ ansible_facts.default_ipv4['interface'] }}"
+
+- name: Print primary interface (for debugging)
+  debug:
+    msg: "Primary network interface is {{ default_interface }}"
+
+- name: Disable tx-checksum-ip-generic
+  ini_file:
+    path: "/etc/network/interfaces"
+    section: "post-up ethtool -K {{ default_interface }} tx-checksum-ip-generic off"
+    option: ""
+    value: ""
+    no_extra_spaces: true
+  notify: restart_networking

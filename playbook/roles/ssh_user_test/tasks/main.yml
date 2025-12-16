@@ -1,0 +1,6 @@
+- name: Test ssh connection
+  ansible.builtin.ping:
+
+- name: Test SSH connection with elevated privileges
+  ansible.builtin.ping:
+  become: true

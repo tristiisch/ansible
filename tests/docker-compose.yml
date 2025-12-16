@@ -1,5 +1,5 @@
 services:
-  dock-man-001: &id001
+  manager001: &id001
     build: ./debian
     deploy:
       resources:
@@ -13,9 +13,9 @@ services:
     - '9000'
     privileged: true
     volumes:
-    - /sys/fs/cgroup:/sys/fs/cgroup:ro
-  dock-man-002: *id001
-  dock-man-003: *id001
-  dock-wor-001: *id001
-  dock-wor-002: *id001
-  dock-wor-003: *id001
+    - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  manager002: *id001
+  manager003: *id001
+  worker001: *id001
+  worker002: *id001
+  worker003: *id001

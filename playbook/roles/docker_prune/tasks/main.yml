@@ -1,0 +1,31 @@
+- name: Copy script
+  ansible.builtin.template:
+    src: "script.sh.j2"
+    dest: "/bin/docker-prune"
+    owner: root
+    group: root
+    mode: 755
+
+- name: Copy service
+  ansible.builtin.template:
+    src: "service.j2"
+    dest: "/etc/systemd/system/docker-prune.service"
+    owner: root
+    group: root
+  notify:
+    - reload_systemd_deamon
+
+- name: Copy task
+  ansible.builtin.template:
+    src: "task.j2"
+    dest: "/etc/systemd/system/docker-prune.timer"
+    owner: root
+    group: root
+  notify:
+    - reload_systemd_deamon
+
+- name: Enable service
+  ansible.builtin.systemd_service:
+    name: "docker-prune.timer"
+    enabled: true
+    state: "started"

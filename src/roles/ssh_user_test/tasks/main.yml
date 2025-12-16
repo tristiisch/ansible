@@ -1,6 +1,0 @@
-- name: Test ssh connection {{ ansible_user }}
-  ping:
-
-- name: Test SSH connection {{ ansible_user }} with elevated privileges
-  ping:
-  become: yes

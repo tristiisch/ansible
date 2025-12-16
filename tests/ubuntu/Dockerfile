@@ -14,14 +14,14 @@ RUN apt install -y \
 
 RUN sed -i "s|SHELL=/bin/sh|SHELL=$SHELL|g" /etc/default/useradd
 
-RUN useradd -m president \
-	&& chmod 700 -R /home/president \
-	&& echo 'president:P@ssword!' | chpasswd \
-	&& echo 'president ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/president
+RUN useradd -m president && \
+	chmod 700 -R /home/president && \
+	echo 'president:P@ssword!' | chpasswd && \
+	echo 'president ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/president
 
-RUN mkdir -p /run/sshd \
-	&& echo 'PermitRootLogin no' >> /etc/ssh/sshd_config.d/custom \
-	&& echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config.d/custom
+RUN mkdir -p /run/sshd && \
+	echo 'PermitRootLogin no' >> /etc/ssh/sshd_config.d/custom && \
+	echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config.d/custom
 
 # USER president
 

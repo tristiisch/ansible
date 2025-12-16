@@ -1,0 +1,33 @@
+- name: Ensure docker group exists
+  ansible.builtin.group:
+    name: docker
+    state: present
+
+- name: Ensure ansible user exists
+  ansible.builtin.user:
+    name: ansible
+    state: present
+
+- name: Add ansible user to docker group
+  ansible.builtin.user:
+    name: ansible
+    groups: docker
+    append: true
+  register: user_result
+
+# - name: Define Docker daemon configuration
+#   template:
+#     src: daemon.json.j2
+#     dest: /etc/docker/daemon.json
+#   notify:
+#     - restart_docker
+
+- name: Force SSH reconnection to apply new group membership
+  ansible.builtin.meta: reset_connection
+
+# - name: Define Docker service configuration
+#   template:
+#     src: docker.service.j2
+#     dest: /etc/systemd/system/{{ service_name }}.service.d/override.conf
+#   notify:
+#     - reload_systemd

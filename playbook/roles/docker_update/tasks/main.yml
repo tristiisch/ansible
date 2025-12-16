@@ -1,0 +1,45 @@
+- name: Check if docker package needs an update
+  ansible.builtin.package:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: latest
+    update_cache: true
+  register: docker_update
+  check_mode: true
+
+- name: Update docker package if update is needed
+  ansible.builtin.package:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: latest
+    update_cache: true
+  when: docker_update.changed
+
+- name: Ensure Docker runs for 1+ min
+  ansible.builtin.systemd_service:
+    name: docker
+    state: started
+  register: docker_service
+  until: >
+    docker_service.status.ActiveState == 'active' and
+    (
+      (now(fmt='%s') | int)
+      - (
+        (ansible_date_time.epoch | int)
+        - (ansible_facts.uptime_seconds | int)
+        + (docker_service.status.ActiveEnterTimestampMonotonic | int / 1000000 | int)
+        | int
+      )
+    ) > 60
+  retries: 12
+  delay: 10
+  check_mode: true
+  when: docker_update.changed

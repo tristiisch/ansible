@@ -1,0 +1,18 @@
+- name: Set a fact for random host
+  ansible.builtin.set_fact:
+    random_host: "{{ groups['docker_managers'] | random }}"
+  run_once: true
+  when: not cluster_exists or not cluster_healthy
+
+- name: Initialize Docker Swarm
+  community.docker.docker_swarm:
+    state: present
+    force: "{{ not cluster_healthy }}"
+    data_path_addr: "{{ hostvars[random_host].ansible_env.SSH_CLIENT.split(' ')[0] }}"
+  register: swarm_result
+  delegate_to: "{{ random_host }}"
+  run_once: true
+  when: not cluster_exists or not cluster_healthy
+
+# - debug:
+#     var: swarm_result

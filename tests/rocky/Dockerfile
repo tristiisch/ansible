@@ -18,8 +18,8 @@ RUN dnf install -y --allowerasing \
 	python3 python3-pip python3-packaging openssh-server sudo \
 	curl nano passwd \
 	htop net-tools \
-	iputils nmap-ncat bind-utils \
-	&& yum clean all
+	iputils nmap-ncat bind-utils && \
+	yum clean all
 
 RUN useradd -m president && \
 	echo "president:P@ssword!" | chpasswd && \
