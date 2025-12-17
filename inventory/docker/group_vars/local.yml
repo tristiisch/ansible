@@ -1,0 +1,3 @@
+key_private_name: docker_lab
+key_type: ed25519
+ssh_users_to_create: []

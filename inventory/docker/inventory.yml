@@ -1,6 +1,14 @@
+all:
+  children:
+    local:
+      hosts:
+        localhost:
+          ansible_connection: local
+
 ssh:
   children:
-    docker:
+    managers:
+    workers:
 
 docker:
   children:
@@ -8,9 +16,17 @@ docker:
     docker_workers:
 
 docker_managers:
-  hosts:
-    DOCK-MAN-00[1:3]:
+  children:
+    managers:
 
 docker_workers:
+  children:
+    workers:
+
+managers:
   hosts:
-    DOCK-WOR-00[1:3]:
+    MANAGER00[1:3]:
+
+workers:
+  hosts:
+    WORKER00[1:3]:

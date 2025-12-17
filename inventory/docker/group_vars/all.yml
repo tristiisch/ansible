@@ -1,0 +1,2 @@
+key_dir: ~/.ansible_keys
+key_public_name: docker_lab.pub

@@ -28,7 +28,7 @@ cli:
 		ansible \
 		bash
 
-docker: docker-init docker-start docker-cli
+tests: docker-down docker-init docker-start docker-cli
 
 play:
 	@ansible-playbook $(PLAYBOOKS_DIR)/$(RUN_ARGS).yml -i $(INVENTORIES_DIR)/$(ANSIBLE_ENV)
