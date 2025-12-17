@@ -32,14 +32,6 @@
   loop: "{{ nfs_mounts }}"
   notify: restart_cachefilesd
 
-- name: Ensure local mount directories exist
-  ansible.builtin.file:
-    path: "{{ item.local_path }}"
-    state: directory
-    mode: "{{ item.mode | default('755') }}"
-  become: true
-  loop: "{{ nfs_mounts }}"
-
 - name: Mount NFS shares
   ansible.builtin.mount:
     path: "{{ item.local_path }}"
