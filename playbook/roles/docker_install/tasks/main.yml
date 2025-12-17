@@ -67,7 +67,7 @@
     state: present
   when: ansible_os_family == 'Debian'
 
-- name: Add Docker repository for Debian/Ubuntu
+- name: Add Docker GPG key and repository for Debian/Ubuntu
   ansible.builtin.deb822_repository:
     name: docker
     types: [deb]
@@ -79,7 +79,7 @@
     enabled: true
   when: ansible_os_family == 'Debian'
 
-- name: APT update
+- name: Refresh repositories for Debian/Ubuntu
   ansible.builtin.apt:
     update_cache: true
   when: ansible_os_family == 'Debian'
