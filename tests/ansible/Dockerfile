@@ -1,4 +1,4 @@
-FROM debian:bookworm
+FROM debian:trixie
 ARG SHELL=/bin/bash
 
 # Use French mirror
@@ -14,6 +14,7 @@ RUN apt update && \
 
 RUN DEBIAN_VERSION=$(grep VERSION_CODENAME /etc/os-release | cut -d'=' -f2) && \
 	case $DEBIAN_VERSION in \
+		forky) UBUNTU_CODENAME_EQUIVALENT=resolute ;; \
 		trixie) UBUNTU_CODENAME_EQUIVALENT=noble ;; \
 		bookworm) UBUNTU_CODENAME_EQUIVALENT=jammy ;; \
 		bullseye) UBUNTU_CODENAME_EQUIVALENT=focal ;; \
