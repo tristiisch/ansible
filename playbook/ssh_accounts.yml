@@ -5,12 +5,6 @@
   roles:
     - ssh_users_keygen
 
-- name: Set default shell
-  hosts: ssh
-  gather_facts: false
-  roles:
-    - default_shell
-
 - name: Create ssh accounts
   hosts: ssh
   gather_facts: false

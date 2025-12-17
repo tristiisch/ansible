@@ -22,6 +22,7 @@
     password: "{{ item.password }}"
     groups: "{{ item.groups | default(omit) }}"
     group: "{{ item.default_group | default(item.user) }}"
+    shell: "{{ item.shell | default(default_shell, true) | default(omit) }}"
   register: users_created
   loop: "{{ ssh_users_to_create }}"
   become: true
