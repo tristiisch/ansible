@@ -38,12 +38,12 @@
 
 - name: Join remaining managers to the swarm
   hosts: docker_managers
-  gather_facts: false
+  gather_facts: true
   roles:
     - docker_swarm_manager_join
 
 - name: Join remaining worker to the swarm
   hosts: docker_workers
-  gather_facts: false
+  gather_facts: true
   roles:
     - docker_swarm_worker_join

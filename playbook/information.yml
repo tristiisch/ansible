@@ -2,3 +2,4 @@
   hosts: ssh
   roles:
     - informations
+  gather_facts: true

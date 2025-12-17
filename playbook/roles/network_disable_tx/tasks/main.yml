@@ -1,6 +1,6 @@
 - name: Get default route interface
   ansible.builtin.set_fact:
-    default_interface: "{{ ansible_facts.default_ipv4['interface'] }}"
+    default_interface: "{{ ansible_facts.default_ipv4.interface }}"
 
 - name: Print primary interface (for debugging)
   debug:

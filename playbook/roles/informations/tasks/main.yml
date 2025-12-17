@@ -33,3 +33,7 @@
 - name: Print Python version
   ansible.builtin.debug:
     msg: "{{ ansible_facts['python_version'] }}"
+
+- name: Print default IP
+  ansible.builtin.debug:
+    msg: "{{ ansible_facts.default_ipv4.address }}"

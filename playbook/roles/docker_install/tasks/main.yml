@@ -47,6 +47,7 @@
       - gnupg
       - lsb-release  # Needed on some Debian-based systems
       - wget  # Needed on some distributions
+      - iproute2   # Require to get private IP
     state: present
   when: ansible_os_family == 'Debian'
 
@@ -56,6 +57,7 @@
       - yum-utils  # Required for yum-config-manager
       - device-mapper-persistent-data
       - lvm2
+      - iproute2 # Require to get private IP
     state: present
   when: ansible_os_family == 'RedHat'
 
