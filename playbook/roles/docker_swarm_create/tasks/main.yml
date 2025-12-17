@@ -8,7 +8,6 @@
   community.docker.docker_swarm:
     state: present
     force: "{{ not cluster_healthy }}"
-    data_path_addr: "{{ hostvars[random_host].ansible_env.SSH_CLIENT.split(' ')[0] }}"
   register: swarm_result
   delegate_to: "{{ random_host }}"
   run_once: true
