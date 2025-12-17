@@ -1,9 +1,10 @@
-- name: Generate ssh keys
-  connection: local
-  hosts: localhost
-  gather_facts: false
-  roles:
-    - ssh_users_keygen
+### Ansible is not responsible for generating account keys
+# - name: Generate ssh keys
+#   connection: local
+#   hosts: localhost
+#   gather_facts: false
+#   roles:
+#     - ssh_users_keygen
 
 - name: Create ssh accounts
   hosts: ssh
