@@ -1,3 +1,7 @@
+# - name: Gather fresh facts for this host
+#   ansible.builtin.setup:
+#     gather_subset: all
+
 - name: Print Kernel
   ansible.builtin.debug:
     msg: "{{ ansible_facts['kernel'] }} {{ ansible_facts['kernel_version'] }}"
