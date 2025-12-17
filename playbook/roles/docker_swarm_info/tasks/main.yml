@@ -1,9 +1,9 @@
 - name: Get docker info
-  docker_host_info:
+  community.docker.docker_host_info:
   register: swarm_status
 
 - name: Print cluster error if any
-  fail:
+  ansible.builtin.fail:
     msg: "{{ swarm_status.host_info.Swarm.Error }}"
   when: swarm_status.host_info.Swarm.Error != ''
   ignore_errors: true

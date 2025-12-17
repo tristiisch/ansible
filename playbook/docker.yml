@@ -14,7 +14,6 @@
 
 - name: Get Docker Swarm Informations
   hosts: docker
-  gather_facts: false
   roles:
     - docker_swarm_info
 
@@ -26,13 +25,11 @@
 
 - name: Get Docker Swarm Informations
   hosts: docker
-  gather_facts: false
   roles:
     - docker_swarm_info
 
 - name: Get join tokens
   hosts: docker_managers
-  gather_facts: false
   roles:
     - docker_swarm_get_tokens
 

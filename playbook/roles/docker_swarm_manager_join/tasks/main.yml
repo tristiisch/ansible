@@ -7,13 +7,13 @@
   when: in_cluster == false
 
 - name: Leave previous cluster
-  docker_swarm:
+  community.docker.docker_swarm:
     state: absent
     force: "{{ is_manager }}"
   when: is_stuck == true
 
 - name: Join manager to the swarm
-  docker_swarm:
+  community.docker.docker_swarm:
     join_token: "{{ manager_info.manager_token }}"
     remote_addrs: ["{{ manager_info.ansible_facts.default_ipv4.address }}:2377"]
     state: join

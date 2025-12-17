@@ -1,6 +1,7 @@
 - name: Update package index
   ansible.builtin.package:
     update_cache: true
+  become: true
 
 - name: Install common packages on Debian, Ubuntu
   ansible.builtin.package:
@@ -11,6 +12,7 @@
       - iputils-ping
       - curl
     state: present
+  become: true
   when: ansible_os_family == 'Debian'
 
 - name: Install common packages on Red Hat
@@ -22,4 +24,5 @@
       - iputils
       - curl
     state: present
+  become: true
   when: ansible_os_family == 'RedHat'

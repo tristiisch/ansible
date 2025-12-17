@@ -3,11 +3,11 @@
     default_interface: "{{ ansible_facts.default_ipv4.interface }}"
 
 - name: Print primary interface (for debugging)
-  debug:
+  ansible.builtin.debug:
     msg: "Primary network interface is {{ default_interface }}"
 
 - name: Disable tx-checksum-ip-generic
-  ini_file:
+  community.general.ini_file:
     path: "/etc/network/interfaces"
     section: "post-up ethtool -K {{ default_interface }} tx-checksum-ip-generic off"
     option: ""

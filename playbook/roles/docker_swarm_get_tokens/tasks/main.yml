@@ -35,6 +35,6 @@
       }}
 
 - name: Raise error if token values are not the same
-  fail:
+  ansible.builtin.fail:
     msg: "They is more than one cluster between your nodes."
   when: not all_manager_token_same or not all_worker_token_same
