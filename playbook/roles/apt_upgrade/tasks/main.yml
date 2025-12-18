@@ -7,7 +7,6 @@
 - name: APT upgrade
   ansible.builtin.apt:
     upgrade: safe
-    state: latest
   become: true
 
 - name: APT auto-remove
@@ -21,3 +20,17 @@
     autoclean: true
     clean: true
   become: true
+
+- name: Show packages requiring reboot
+  ansible.builtin.command: cat /var/run/reboot-required.pkgs
+  register: reboot_pkgs
+  changed_when: false
+  when: reboot_required.stat.exists
+
+- name: Notify reboot with packages
+  ansible.builtin.debug:
+    msg: |
+      ⚠️ Reboot required on {{ inventory_hostname }}
+      Packages:
+      {{ reboot_pkgs.stdout }}
+  when: reboot_required.stat.exists

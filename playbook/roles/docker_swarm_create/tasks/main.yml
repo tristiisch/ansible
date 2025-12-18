@@ -1,4 +1,4 @@
-- name: Set a fact for random host
+- name: Select random host
   ansible.builtin.set_fact:
     random_host: "{{ groups['docker_managers'] | random }}"
   run_once: true

@@ -5,5 +5,5 @@
   become: true
 
 - name: reload_systemd_deamon
-  service:
+  ansible.builtin.service:
     daemon_reload: true
